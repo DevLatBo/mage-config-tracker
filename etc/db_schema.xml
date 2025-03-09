@@ -4,7 +4,10 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <table name="config_tracked" resource="default" comment="Config Tracked">
         <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="ID" />
-        <column xsi:type="varchar" name="name" nullable="false" length="64" comment="Field Name" />
+        <column xsi:type="varchar" name="section" nullable="false" length="64" comment="Section Config" />
+        <column xsi:type="varchar" name="path" nullable="false" length="64" comment="Config Path Name" />
+        <column xsi:type="varchar" name="old_value" nullable="false" length="128" comment="Old Config Value"/>
+        <column xsi:type="varchar" name="new_value" nullable="false" length="128" comment="New Config Value"/>
         <column xsi:type="boolean" name="verified" nullable="true" comment="Verified" />
         <column xsi:type="timestamp" name="configurated_at" on_update="false" nullable="false"
                 default="CURRENT_TIMESTAMP" comment="Configuration Time"/>

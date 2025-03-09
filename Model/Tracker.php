@@ -37,18 +37,55 @@ class Tracker extends AbstractModel implements TrackerInterface
     /**
      * @return string
      */
-    public function getName(): string
+    public function getSection(): string
     {
-        return $this->getData(self::NAME);
+        return $this->getData(self::SECTION);
     }
 
     /**
-     * @param $name
+     * @param $section
      * @return TrackerInterface
      */
-    public function setName($name): TrackerInterface
+    public function setSection($section): TrackerInterface
     {
-        return $this->setData(self::NAME, $name);
+        return $this->setData(self::SECTION, $section);
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->getData(self::PATH);
+    }
+
+    /**
+     * @param string $path
+     * @return TrackerInterface
+     */
+    public function setPath($path): TrackerInterface
+    {
+        return $this->setData(self::PATH, $path);
+    }
+
+    public function getOldValue(): string
+    {
+        return $this->getData(self::OLD_VALUE);
+    }
+
+    public function setOldValue($oldValue): TrackerInterface
+    {
+        return $this->setData(self::OLD_VALUE, $oldValue);
+    }
+
+    public function getNewValue(): string
+    {
+        return $this->getData(self::NEW_VALUE);
+    }
+
+    public function setNewValue($newValue): TrackerInterface
+    {
+        return $this->setData(self::NEW_VALUE, $newValue);
     }
 
     /**

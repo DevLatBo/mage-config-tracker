@@ -2,6 +2,9 @@
 
 namespace Devlat\ConfigTracker\Plugin\Config;
 
+use Devlat\ConfigTracker\Model\ResourceModel\Tracker as TrackerResource;
+use Devlat\ConfigTracker\Model\Tracker;
+use Devlat\ConfigTracker\Model\TrackerFactory;
 use \Magento\Config\Model\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;
@@ -11,14 +14,20 @@ class Save
 
     private ScopeConfigInterface $scopeConfig;
     private ResourceConnection $resourceConnection;
+    private TrackerFactory $trackerFactory;
+    private TrackerResource $trackerResource;
 
     public function __construct(
         ScopeConfigInterface $scopeConfig,
+        TrackerFactory $trackerFactory,
+        TrackerResource $trackerResource,
         ResourceConnection $resourceConnection
     )
     {
         $this->scopeConfig = $scopeConfig;
         $this->resourceConnection = $resourceConnection;
+        $this->trackerFactory = $trackerFactory;
+        $this->trackerResource = $trackerResource;
     }
 
     /**
@@ -38,7 +47,7 @@ class Save
 
         $section = $subject->getSection();
         $groups = $subject->getGroups();
-        $configsData = $subject->getData();
+        //$configsData = $subject->getData();
         $logger->info("Section: ". $section);
 
         //$logger->info("Groups: ". print_r($groups, true));
@@ -55,39 +64,31 @@ class Save
                 $existsInDb = (bool) $connection->fetchOne($query, $binds);
 
                 if (!$existsInDb) {
-                    // Si el campo no está en la base de datos, lo ignoramos
                     $logger->info("⏩ Ignorado: $configPath (No existe en core_config_data)");
                     continue;
                 }
 
-                $logger->info("path: ".$configPath);
                 $oldValue = $this->scopeConfig->getValue($configPath);
                 $newValue = $data['value'];
-                $logger->info("Old Value: ".$oldValue);
-                $logger->info("New Value: ".$newValue);
-                $logger->info("----------------------");
+                if($oldValue != $newValue) {
+                    try {
+                        /** @var Tracker $tracker */
+                        $tracker = $this->trackerFactory->create();
+                        $tracker->setSection($section);
+                        $tracker->setPath($configPath);
+                        $tracker->setOldValue($oldValue);
+                        $tracker->setNewValue($newValue);
+                        $tracker->setVerified(0);
+                        $this->trackerResource->save($tracker);
+
+                        $logger->info("path: ".$configPath);
+                        $logger->info("Old Value: ".$oldValue);
+                        $logger->info("New Value: ".$newValue);
+                    } catch (\Exception $e) {
+                        $logger->info($e->getMessage());
+                    }
+                }
             }
         }
-        /*
-        foreach ($groups as $group => $fields) {
-            foreach ($fields['fields'] as $field => $data) {
-                if (!isset($data['value'])) {
-                    continue;
-                }
-
-                $configPath = "{$section}/{$group}/{$field}";
-                $logger->info($configPath);
-                // Obtener el valor anterior desde la base de datos
-                $oldValue = $this->scopeConfig->getValue($configPath);
-
-                // Obtener el valor nuevo
-                $newValue = $data['value'];
-
-                // Comparar valores
-                if ($oldValue != $newValue) {
-                    $logger->info("📝 Campo cambiado: $configPath | Antes: $oldValue | Ahora: $newValue");
-                }
-            }
-        }*/
     }
 }
