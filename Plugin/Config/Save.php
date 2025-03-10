@@ -2,10 +2,11 @@
 
 namespace Devlat\ConfigTracker\Plugin\Config;
 
+use Devlat\ConfigTracker\Logger\Logger;
 use Devlat\ConfigTracker\Model\ResourceModel\Tracker as TrackerResource;
 use Devlat\ConfigTracker\Model\Tracker;
 use Devlat\ConfigTracker\Model\TrackerFactory;
-use \Magento\Config\Model\Config;
+use Magento\Config\Model\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;
 
@@ -16,18 +17,21 @@ class Save
     private ResourceConnection $resourceConnection;
     private TrackerFactory $trackerFactory;
     private TrackerResource $trackerResource;
+    private Logger $logger;
 
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         TrackerFactory $trackerFactory,
         TrackerResource $trackerResource,
-        ResourceConnection $resourceConnection
+        ResourceConnection $resourceConnection,
+        Logger $logger
     )
     {
         $this->scopeConfig = $scopeConfig;
         $this->resourceConnection = $resourceConnection;
         $this->trackerFactory = $trackerFactory;
         $this->trackerResource = $trackerResource;
+        $this->logger = $logger;
     }
 
     /**
@@ -41,17 +45,11 @@ class Save
     {
         $connection = $this->resourceConnection->getConnection();
         $tableName = $connection->getTableName('core_config_data');
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/oscar.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
 
         $section = $subject->getSection();
         $groups = $subject->getGroups();
-        //$configsData = $subject->getData();
-        $logger->info("Section: ". $section);
 
-        //$logger->info("Groups: ". print_r($groups, true));
-        //$logger->info(print_r($subject->getData(), true));
+        $this->logger->info("Tracking config updates...");
 
         foreach ($groups as $group => $fields) {
             foreach ($fields['fields'] as $field => $data) {
@@ -64,7 +62,7 @@ class Save
                 $existsInDb = (bool) $connection->fetchOne($query, $binds);
 
                 if (!$existsInDb) {
-                    $logger->info("⏩ Ignorado: $configPath (No existe en core_config_data)");
+                    $this->logger->info("Path {$configPath} not found in database");
                     continue;
                 }
 
@@ -81,11 +79,10 @@ class Save
                         $tracker->setVerified(0);
                         $this->trackerResource->save($tracker);
 
-                        $logger->info("path: ".$configPath);
-                        $logger->info("Old Value: ".$oldValue);
-                        $logger->info("New Value: ".$newValue);
+                        $this->logger->info("Path value: {$configPath} tracked successfully.");
+
                     } catch (\Exception $e) {
-                        $logger->info($e->getMessage());
+                        $this->logger->info('Error: '. $$e->getMessage() );
                     }
                 }
             }
