@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Devlat_ConfigTracker::config_track_logs"
+             title="Config Track Logs"
+             translate="title"
+             module="Devlat_ConfigTracker"
+             sortOrder="30"
+             parent="Magento_AsynchronousOperations::system_magento_logging"
+             action="tracker/config"
+             resource="Devlat_ConfigTracker::config_track_logs"
+        />
+    </menu>
+</config>
