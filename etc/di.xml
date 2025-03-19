@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Devlat\ConfigTracker\Api\Data\TrackerInterface"
+                type="Devlat\ConfigTracker\Model\Tracker" />
+
+    <virtualType name="Devlat\ConfigTracker\Model\ResourceModel\Tracker\Grid\Collection"
+        type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">config_tracked</argument>
+            <argument name="resourceModel" xsi:type="string">Devlat\ConfigTracker\Model\ResourceModel\Tracker</argument>
+        </arguments>
+    </virtualType>
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="devlat_config_tracker_listing_data_source" xsi:type="string">
+                    Devlat\ConfigTracker\Model\ResourceModel\Tracker\Grid\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
