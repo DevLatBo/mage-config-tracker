@@ -38,7 +38,7 @@ class Index extends Action implements HttpGetActionInterface
     public function execute(): Page
     {
         $resultPage = $this->pageFactory->create();
-        $resultPage->setActiveMenu('Devlat_ConfigTracker::config_track_logs');
+        $resultPage->setActiveMenu('Magento_Backend::system');
         $resultPage->getConfig()->getTitle()->prepend(__('Tracker'));
 
         return $resultPage;

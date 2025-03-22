@@ -15,7 +15,7 @@
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="devlat_config_tracker_listing_data_source" xsi:type="string">
+                <item name="devlat_tracker_config_listing_data_source" xsi:type="string">
                     Devlat\ConfigTracker\Model\ResourceModel\Tracker\Grid\Collection
                 </item>
             </argument>
