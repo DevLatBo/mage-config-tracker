@@ -10,6 +10,10 @@ class Collection extends AbstractCollection
 {
 
     protected $_idFieldName = 'id';
+
+    /**
+     * @return void
+     */
     protected function _construct(): void
     {
         $this->_init(TrackerModel::class , TrackerResourceModel::class);

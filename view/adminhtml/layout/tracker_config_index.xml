@@ -2,7 +2,7 @@
       xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <uiComponent name="devlat_config_tracker_listing" />
+            <uiComponent name="devlat_configtracker_tracker_listing" />
         </referenceContainer>
     </body>
 </page>
