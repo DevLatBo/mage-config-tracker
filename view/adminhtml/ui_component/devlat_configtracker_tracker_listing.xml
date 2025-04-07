@@ -33,6 +33,15 @@
         </argument>
     </dataSource>
     <columns name="devlat_configtracker_tracker_columns">
+        <column name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">ID</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="visible" xsi:type="boolean">false</item>
+                </item>
+            </argument>
+        </column>
         <column name="section">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -49,7 +58,7 @@
                 </item>
             </argument>
         </column>
-        <column name="verified">
+        <column name="verified" component="Devlat_ConfigTracker/js/grid/columns/custom">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Verified</item>

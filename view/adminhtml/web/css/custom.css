@@ -1,0 +1,26 @@
+.verified {
+    background: #d0e5a9 none repeat scroll 0 0;
+    border: 1px solid #5b8116;
+    color: #185b00;
+    display: block;
+    font-weight: bold;
+    line-height: 17px;
+    padding: 0 3px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 40px;
+    margin: 0 auto;
+}
+.not-verified {
+    background: #f9d4d4 none repeat scroll 0 0;
+    border: 1px solid #e22626;
+    color: #e22626;
+    display: block;
+    font-weight: bold;
+    line-height: 17px;
+    padding: 0 3px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 40px;
+    margin: 0 auto;
+}
