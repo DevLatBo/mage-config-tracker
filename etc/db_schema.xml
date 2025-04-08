@@ -16,5 +16,8 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id" />
         </constraint>
+        <index referenceId="CONFIG_TRACKED_PATH" indexType="fulltext">
+            <column name="path"/>
+        </index>
     </table>
 </schema>

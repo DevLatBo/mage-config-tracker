@@ -32,6 +32,10 @@
             </item>
         </argument>
     </dataSource>
+    <listingToolbar name="listing_top">
+        <paging name="listing_paging"/>
+        <filterSearch name="fulltext"/>
+    </listingToolbar>
     <columns name="devlat_configtracker_tracker_columns">
         <column name="id">
             <argument name="data" xsi:type="array">
