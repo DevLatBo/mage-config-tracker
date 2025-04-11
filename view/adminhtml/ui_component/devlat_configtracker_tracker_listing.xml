@@ -34,6 +34,7 @@
     </dataSource>
     <listingToolbar name="listing_top">
         <paging name="listing_paging"/>
+        <filters name="listing_filters" />
         <filterSearch name="fulltext"/>
     </listingToolbar>
     <columns name="devlat_configtracker_tracker_columns">
@@ -49,6 +50,7 @@
         <column name="section">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Section</item>
                     <item name="sortOrder" xsi:type="number">10</item>
                 </item>
@@ -57,6 +59,7 @@
         <column name="path">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
                     <item name="label" xsi:type="string" translate="true">Path</item>
                     <item name="sortOrder" xsi:type="number">20</item>
                 </item>
@@ -76,6 +79,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="dateFormat" xsi:type="string">dd/MM/Y hh:mm:ss</item>
+                    <item name="filter" xsi:type="string">dateRange</item>
                     <item name="label" xsi:type="string" translate="true">Configurated At</item>
                     <item name="editor" xsi:type="array">
                         <item name="editorType" xsi:type="string">date</item>
@@ -93,6 +97,7 @@
                     <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
                     <item name="dataType" xsi:type="string">date</item>
                     <item name="dateFormat" xsi:type="string">dd/MM/Y hh:mm:ss</item>
+                    <item name="filter" xsi:type="string">dateRange</item>
                     <item name="label" xsi:type="string" translate="true">Checked</item>
                     <item name="editor" xsi:type="array">
                         <item name="editorType" xsi:type="string">date</item>
