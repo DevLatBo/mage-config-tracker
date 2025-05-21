@@ -7,7 +7,9 @@
             <resource id="Magento_Backend::admin">
                 <resource id="Magento_Backend::system">
                     <resource id="Magento_Logging::magento_logging">
-                        <resource id="Devlat_ConfigTracker::config_track_logs" title="Config Tracked List" translate="true" sortOrder="20"/>
+                        <resource id="Devlat_ConfigTracker::config_track_logs" title="Config Tracked List" translate="true" sortOrder="20">
+                            <resource id="Devlat_ConfigTracker::config_track_log_verify" title="Verify and Update" translate="title"/>
+                        </resource>
                     </resource>
                 </resource>
             </resource>

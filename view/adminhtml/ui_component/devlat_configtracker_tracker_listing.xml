@@ -109,5 +109,8 @@
                 </item>
             </argument>
         </column>
+        <actionsColumn name="actions" class="Devlat\ConfigTracker\Ui\Component\Listing\Column\Actions">
+
+        </actionsColumn>
     </columns>
 </listing>
