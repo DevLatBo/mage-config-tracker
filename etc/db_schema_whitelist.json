@@ -1,0 +1,20 @@
+{
+    "config_tracked": {
+        "column": {
+            "id": true,
+            "section": true,
+            "path": true,
+            "old_value": true,
+            "new_value": true,
+            "verified": true,
+            "configurated_at": true,
+            "checked": true
+        },
+        "index": {
+            "CONFIG_TRACKED_PATH": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

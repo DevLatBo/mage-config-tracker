@@ -8,7 +8,10 @@ use Magento\Framework\Model\ResourceModel\Db\Context;
 class Tracker extends AbstractDb
 {
 
-    protected $_idFieldName = 'id';
+    /** @var string Main Table Name */
+    const MAIN_TABLE = 'config_tracked';
+    /** @var string Main table primary key field name */
+    const ID_FIELD_NAME = 'id';
 
     /**
      * @param Context $context
@@ -27,6 +30,6 @@ class Tracker extends AbstractDb
      */
     protected function _construct(): void
     {
-        $this->_init('config_tracked', 'id');
+        $this->_init(self::MAIN_TABLE, self::ID_FIELD_NAME);
     }
 }

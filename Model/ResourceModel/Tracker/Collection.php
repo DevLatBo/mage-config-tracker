@@ -9,8 +9,6 @@ use Devlat\ConfigTracker\Model\ResourceModel\Tracker as TrackerResourceModel;
 class Collection extends AbstractCollection
 {
 
-    protected $_idFieldName = 'id';
-
     /**
      * @return void
      */
