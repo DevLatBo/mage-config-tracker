@@ -13,12 +13,34 @@ use Magento\Framework\App\ResourceConnection;
 class Save
 {
 
+    /**
+     * @var ScopeConfigInterface
+     */
     private ScopeConfigInterface $scopeConfig;
+    /**
+     * @var ResourceConnection
+     */
     private ResourceConnection $resourceConnection;
+    /**
+     * @var TrackerFactory
+     */
     private TrackerFactory $trackerFactory;
+    /**
+     * @var TrackerResource
+     */
     private TrackerResource $trackerResource;
+    /**
+     * @var Logger
+     */
     private Logger $logger;
 
+    /**
+     * @param ScopeConfigInterface $scopeConfig
+     * @param TrackerFactory $trackerFactory
+     * @param TrackerResource $trackerResource
+     * @param ResourceConnection $resourceConnection
+     * @param Logger $logger
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         TrackerFactory $trackerFactory,
