@@ -12,7 +12,6 @@ use Magento\Framework\App\ResourceConnection;
 
 class Save
 {
-
     /**
      * @var ScopeConfigInterface
      */
