@@ -8,14 +8,14 @@
     <virtualType name="Devlat\Tracker\Model\ResourceModel\Tracker\Grid\Collection"
         type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
-            <argument name="mainTable" xsi:type="string">config_tracked</argument>
+            <argument name="mainTable" xsi:type="string">devlat_config_tracked</argument>
             <argument name="resourceModel" xsi:type="string">Devlat\Tracker\Model\ResourceModel\Tracker</argument>
         </arguments>
     </virtualType>
     <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
         <arguments>
             <argument name="collections" xsi:type="array">
-                <item name="devlat_configtracker_tracker_listing_data_source" xsi:type="string">
+                <item name="devlat_tracker_tracker_listing_data_source" xsi:type="string">
                     Devlat\Tracker\Model\ResourceModel\Tracker\Grid\Collection
                 </item>
             </argument>
