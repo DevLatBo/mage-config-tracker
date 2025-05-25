@@ -1,10 +1,10 @@
 <?php
 
-namespace Devlat\ConfigTracker\Model;
+namespace Devlat\Tracker\Model;
 
-use Devlat\ConfigTracker\Api\Data\TrackerInterface;
+use Devlat\Tracker\Api\Data\TrackerInterface;
 use Magento\Framework\Model\AbstractModel;
-use Devlat\ConfigTracker\Model\ResourceModel\Tracker as TrackerResourceModel;
+use Devlat\Tracker\Model\ResourceModel\Tracker as TrackerResourceModel;
 
 class Tracker extends AbstractModel implements TrackerInterface
 {

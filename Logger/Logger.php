@@ -1,6 +1,6 @@
 <?php
 
-namespace Devlat\ConfigTracker\Logger;
+namespace Devlat\Tracker\Logger;
 
 class Logger extends \Monolog\Logger
 {

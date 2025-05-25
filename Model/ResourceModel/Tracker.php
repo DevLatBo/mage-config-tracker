@@ -1,6 +1,6 @@
 <?php
 
-namespace Devlat\ConfigTracker\Model\ResourceModel;
+namespace Devlat\Tracker\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;

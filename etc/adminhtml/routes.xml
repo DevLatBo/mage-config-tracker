@@ -4,7 +4,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
     <router id="admin">
         <route id="tracker" frontName="tracker">
-            <module name="Devlat_ConfigTracker" />
+            <module name="Devlat_Tracker" />
         </route>
     </router>
 </config>

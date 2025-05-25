@@ -65,7 +65,7 @@
                 </item>
             </argument>
         </column>
-        <column name="verified" component="Devlat_ConfigTracker/js/grid/columns/custom">
+        <column name="verified" component="Devlat_Tracker/js/grid/columns/custom">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Verified</item>
@@ -109,7 +109,7 @@
                 </item>
             </argument>
         </column>
-        <actionsColumn name="actions" class="Devlat\ConfigTracker\Ui\Component\Listing\Column\Actions">
+        <actionsColumn name="actions" class="Devlat\Tracker\Ui\Component\Listing\Column\Actions">
 
         </actionsColumn>
     </columns>

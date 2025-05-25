@@ -1,10 +1,10 @@
 <?php
 
-namespace Devlat\ConfigTracker\Model\ResourceModel\Tracker;
+namespace Devlat\Tracker\Model\ResourceModel\Tracker;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
-use Devlat\ConfigTracker\Model\Tracker as TrackerModel;
-use Devlat\ConfigTracker\Model\ResourceModel\Tracker as TrackerResourceModel;
+use Devlat\Tracker\Model\Tracker as TrackerModel;
+use Devlat\Tracker\Model\ResourceModel\Tracker as TrackerResourceModel;
 
 class Collection extends AbstractCollection
 {

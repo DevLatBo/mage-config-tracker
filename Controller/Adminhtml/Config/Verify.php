@@ -1,6 +1,6 @@
 <?php
 
-namespace Devlat\ConfigTracker\Controller\Adminhtml\Config;
+namespace Devlat\Tracker\Controller\Adminhtml\Config;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -11,7 +11,7 @@ use Magento\Framework\View\Result\PageFactory;
 class Verify extends Action implements HttpGetActionInterface
 {
 
-    const ADMIN_RESOURCE = 'Devlat_ConfigTracker::config_track_log_verify';
+    const ADMIN_RESOURCE = 'Devlat_Tracker::config_track_log_verify';
 
     private PageFactory $pageFactory;
 

@@ -4,6 +4,6 @@ use Magento\Framework\Component\ComponentRegistrar;
 
 ComponentRegistrar::register(
     ComponentRegistrar::MODULE,
-    'Devlat_ConfigTracker',
+    'Devlat_Tracker',
     __DIR__
 );
