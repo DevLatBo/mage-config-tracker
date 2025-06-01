@@ -36,7 +36,7 @@ class Actions extends Column
 
             $item[$this->getData('name')] = [
                 'edit' => [
-                    'href' => $this->urlBuilder->getUrl('tracker/config/verify', [
+                    'href' => $this->urlBuilder->getUrl('config/tracker/verify', [
                             'id' => $item['id'],
                         ],
                     ),

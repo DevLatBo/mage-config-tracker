@@ -44,7 +44,7 @@
                 <label translate="true">Path</label>
             </settings>
         </column>
-        <column name="verified" component="Magento_Ui/js/grid/columns/select">
+        <column name="verified" component="Devlat_Tracker/js/grid/columns/custom">
             <settings>
                 <label translate="true">Verified</label>
                 <options class="Magento\Config\Model\Config\Source\Yesno"/>

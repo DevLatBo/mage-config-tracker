@@ -16,12 +16,5 @@ define([
            }
            return '#303030';
         },
-        getLabel: function(row) {
-           if (row.verified == '0') {
-               return "No";
-           } else if (row.verified == '1') {
-               return "Yes";
-           }
-        }
     });
 });
