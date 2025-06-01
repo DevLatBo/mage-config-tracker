@@ -5,7 +5,7 @@
     </head>
     <body>
         <referenceContainer name="content">
-            <uiComponent name="devlat_configtracker_tracker_listing" />
+            <uiComponent name="devlat_tracker_tracker_listing" />
         </referenceContainer>
     </body>
 </page>

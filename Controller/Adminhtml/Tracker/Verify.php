@@ -1,6 +1,6 @@
 <?php
 
-namespace Devlat\Tracker\Controller\Adminhtml\Config;
+namespace Devlat\Tracker\Controller\Adminhtml\Tracker;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
@@ -8,23 +8,16 @@ use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\Page;
 use Magento\Framework\View\Result\PageFactory;
 
-class Index extends Action implements HttpGetActionInterface
+class Verify extends Action implements HttpGetActionInterface
 {
 
-    const ADMIN_RESOURCE = 'Devlat_Tracker::config_track_logs';
+    const ADMIN_RESOURCE = 'Devlat_Tracker::config_track_log_verify';
 
-    /**
-     * @var PageFactory
-     */
     private PageFactory $pageFactory;
 
-    /**
-     * @param Context $context
-     * @param PageFactory $pageFactory
-     */
     public function __construct(
-        Context $context,
-        PageFactory $pageFactory
+        PageFactory $pageFactory,
+        Context $context
     )
     {
         parent::__construct($context);
@@ -32,14 +25,13 @@ class Index extends Action implements HttpGetActionInterface
     }
 
     /**
-     * Set title as "Tracker".
      * @return Page
      */
     public function execute(): Page
     {
         $resultPage = $this->pageFactory->create();
         $resultPage->setActiveMenu('Magento_Backend::system');
-        $resultPage->getConfig()->getTitle()->prepend(__('Tracker'));
+        $resultPage->getConfig()->getTitle()->prepend(__('Verify & Update'));
 
         return $resultPage;
     }

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">
+                devlat_tracker_tracker_listing.devlat_tracker_tracker_listing_data_source
+            </item>
+        </item>
+    </argument>
+    <settings>
+        <deps>
+            <dep>devlat_tracker_tracker_listing.devlat_tracker_tracker_listing_data_source</dep>
+        </deps>
+        <spinner>devlat_tracker_tracker_columns</spinner>
+    </settings>
+    <dataSource name="devlat_tracker_tracker_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Devlat_Tracker::config_track_logs</aclResource>
+        <dataProvider name="devlat_tracker_tracker_listing_data_source"
+                      class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <columns name="devlat_tracker_tracker_columns">
+        <column name="id">
+            <settings>
+                <label translate="true">ID</label>
+            </settings>
+        </column>
+        <column name="section">
+            <settings>
+                <label translate="true">Section</label>
+            </settings>
+        </column>
+        <column name="path">
+            <settings>
+                <label translate="true">Path</label>
+            </settings>
+        </column>
+        <column name="verified" component="Magento_Ui/js/grid/columns/select">
+            <settings>
+                <label translate="true">Verified</label>
+                <options class="Magento\Config\Model\Config\Source\Yesno"/>
+                <dataType>select</dataType>
+            </settings>
+        </column>
+        <column name="configurated_at" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <label translate="true">Configurated At</label>
+            </settings>
+        </column>
+        <column name="checked" component="Magento_Ui/js/grid/columns/date">
+            <settings>
+                <label translate="true">Checked</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Devlat\Tracker\Ui\Component\Listing\Column\Actions">
+
+        </actionsColumn>
+    </columns>
+</listing>

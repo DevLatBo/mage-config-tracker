@@ -9,7 +9,7 @@
              module="Devlat_Tracker"
              sortOrder="30"
              parent="Magento_AsynchronousOperations::system_magento_logging"
-             action="tracker/config"
+             action="config/tracker"
              resource="Devlat_Tracker::config_track_logs"
         />
     </menu>
