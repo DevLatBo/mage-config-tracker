@@ -1,15 +1,14 @@
 <?php
 
-namespace Devlat\Tracker\Model\ResourceModel;
+namespace Devlat\Settings\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
-use Magento\Framework\Model\ResourceModel\Db\Context;
 
 class Tracker extends AbstractDb
 {
 
     /** @var string Main Table Name */
-    const MAIN_TABLE = 'devlat_config_tracked';
+    const MAIN_TABLE = 'devlat_settings_tracker';
     /** @var string Main table primary key field name */
     const ID_FIELD_NAME = 'id';
 

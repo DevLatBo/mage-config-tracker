@@ -1,6 +1,6 @@
 <?php
 
-namespace Devlat\Tracker\Logger;
+namespace Devlat\Settings\Logger;
 
 use Magento\Framework\Logger\Handler\Base as BaseHandler;
 use Monolog\Logger;

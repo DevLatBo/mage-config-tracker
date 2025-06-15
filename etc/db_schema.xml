@@ -2,7 +2,7 @@
 
 <schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
-    <table name="devlat_config_tracked" resource="default" comment="Devlat Config Tracked">
+    <table name="devlat_settings_tracker" resource="default" comment="Devlat Settings Tracker">
         <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="ID" />
         <column xsi:type="varchar" name="section" nullable="false" length="64" comment="Section Config" />
         <column xsi:type="varchar" name="path" nullable="false" length="64" comment="Config Path Name" />
@@ -10,13 +10,13 @@
         <column xsi:type="varchar" name="new_value" nullable="false" length="128" comment="New Config Value"/>
         <column xsi:type="boolean" name="verified" nullable="true" comment="Verified" />
         <column xsi:type="timestamp" name="configurated_at" on_update="false" nullable="false"
-                default="CURRENT_TIMESTAMP" comment="Configuration Time"/>
+                default="CURRENT_TIMESTAMP" comment="Settings Time"/>
         <column xsi:type="timestamp" name="checked" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
-                comment="Configuration Checked" />
+                comment="Settings Checked" />
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id" />
         </constraint>
-        <index referenceId="DEVLAT_CONFIG_TRACKED_PATH" indexType="fulltext">
+        <index referenceId="DEVLAT_SETTINGS_TRACKED_PATH" indexType="fulltext">
             <column name="path"/>
         </index>
     </table>

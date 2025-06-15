@@ -2,22 +2,22 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <type name="Devlat\Tracker\Logger\Handler">
+    <type name="Devlat\Settings\Logger\Handler">
         <arguments>
             <argument name="filesystem" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
         </arguments>
     </type>
-    <type name="Devlat\Tracker\Logger\Logger">
+    <type name="Devlat\Settings\Logger\Logger">
         <arguments>
             <argument name="name" xsi:type="string">TrackLogger</argument>
             <argument name="handlers"  xsi:type="array">
-                <item name="system" xsi:type="object">Devlat\Tracker\Logger\Handler</item>
+                <item name="system" xsi:type="object">Devlat\Settings\Logger\Handler</item>
             </argument>
         </arguments>
     </type>
     <type name="Magento\Config\Model\Config">
-        <plugin name="devlat_config_save_plugin"
-                type="Devlat\Tracker\Plugin\Config\Save"
+        <plugin name="devlat_settings_save_plugin"
+                type="Devlat\Settings\Plugin\Setting\Save"
                 sortOrder="10" />
     </type>
 </config>

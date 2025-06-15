@@ -1,6 +1,6 @@
 <?php
 
-namespace Devlat\Tracker\Api\Data;
+namespace Devlat\Settings\Api\Data;
 
 interface TrackerInterface
 {

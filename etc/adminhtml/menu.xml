@@ -3,14 +3,14 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
-        <add id="Devlat_Tracker::config_track_logs"
-             title="Config Track Logs"
+        <add id="Devlat_Settings::config_track_logs"
+             title="Settings Track Logs"
              translate="title"
-             module="Devlat_Tracker"
+             module="Devlat_Settings"
              sortOrder="30"
              parent="Magento_AsynchronousOperations::system_magento_logging"
-             action="config/tracker"
-             resource="Devlat_Tracker::config_track_logs"
+             action="settings/tracker"
+             resource="Devlat_Settings::settings_track_logs"
         />
     </menu>
 </config>

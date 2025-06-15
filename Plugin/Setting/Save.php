@@ -1,11 +1,11 @@
 <?php
 
-namespace Devlat\Tracker\Plugin\Config;
+namespace Devlat\Settings\Plugin\Setting;
 
-use Devlat\Tracker\Logger\Logger;
-use Devlat\Tracker\Model\ResourceModel\Tracker as TrackerResource;
-use Devlat\Tracker\Model\Tracker;
-use Devlat\Tracker\Model\TrackerFactory;
+use Devlat\Settings\Logger\Logger;
+use Devlat\Settings\Model\ResourceModel\Tracker as TrackerResource;
+use Devlat\Settings\Model\Tracker;
+use Devlat\Settings\Model\TrackerFactory;
 use Magento\Config\Model\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;

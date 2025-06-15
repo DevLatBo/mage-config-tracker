@@ -19,7 +19,7 @@
         <settings>
             <updateUrl path="mui/index/render"/>
         </settings>
-        <aclResource>Devlat_Tracker::config_track_logs</aclResource>
+        <aclResource>Devlat_Settings::config_track_logs</aclResource>
         <dataProvider name="devlat_tracker_tracker_listing_data_source"
                       class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
             <settings>
@@ -44,7 +44,7 @@
                 <label translate="true">Path</label>
             </settings>
         </column>
-        <column name="verified" component="Devlat_Tracker/js/grid/columns/custom">
+        <column name="verified" component="Devlat_Settings/js/grid/columns/custom">
             <settings>
                 <label translate="true">Verified</label>
                 <options class="Magento\Config\Model\Config\Source\Yesno"/>
@@ -61,7 +61,7 @@
                 <label translate="true">Checked</label>
             </settings>
         </column>
-        <actionsColumn name="actions" class="Devlat\Tracker\Ui\Component\Listing\Column\Actions">
+        <actionsColumn name="actions" class="Devlat\Settings\Ui\Component\Listing\Column\Actions">
 
         </actionsColumn>
     </columns>

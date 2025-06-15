@@ -1,6 +1,6 @@
 <?php
 
-namespace Devlat\Tracker\Controller\Adminhtml\Tracker;
+namespace Devlat\Settings\Controller\Adminhtml\Tracker;
 
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
