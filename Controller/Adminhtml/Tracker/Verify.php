@@ -11,7 +11,7 @@ use Magento\Framework\View\Result\PageFactory;
 class Verify extends Action implements HttpGetActionInterface
 {
 
-    const ADMIN_RESOURCE = 'Devlat_Tracker::config_track_log_verify';
+    const ADMIN_RESOURCE = 'Devlat_Settings::config_track_log_verify';
 
     private PageFactory $pageFactory;
 

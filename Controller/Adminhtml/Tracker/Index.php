@@ -11,7 +11,7 @@ use Magento\Framework\View\Result\PageFactory;
 class Index extends Action implements HttpGetActionInterface
 {
 
-    const ADMIN_RESOURCE = 'Devlat_Tracker::config_track_logs';
+    const ADMIN_RESOURCE = 'Devlat_Settings::config_track_logs';
 
     /**
      * @var PageFactory

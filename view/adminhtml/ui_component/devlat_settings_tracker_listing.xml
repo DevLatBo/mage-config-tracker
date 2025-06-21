@@ -5,22 +5,22 @@
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
             <item name="provider" xsi:type="string">
-                devlat_tracker_tracker_listing.devlat_tracker_tracker_listing_data_source
+                devlat_settings_tracker_listing.devlat_settings_tracker_listing_data_source
             </item>
         </item>
     </argument>
     <settings>
         <deps>
-            <dep>devlat_tracker_tracker_listing.devlat_tracker_tracker_listing_data_source</dep>
+            <dep>devlat_settings_tracker_listing.devlat_settings_tracker_listing_data_source</dep>
         </deps>
-        <spinner>devlat_tracker_tracker_columns</spinner>
+        <spinner>devlat_settings_tracker_columns</spinner>
     </settings>
-    <dataSource name="devlat_tracker_tracker_listing_data_source" component="Magento_Ui/js/grid/provider">
+    <dataSource name="devlat_settings_tracker_listing_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
             <updateUrl path="mui/index/render"/>
         </settings>
         <aclResource>Devlat_Settings::config_track_logs</aclResource>
-        <dataProvider name="devlat_tracker_tracker_listing_data_source"
+        <dataProvider name="devlat_settings_tracker_listing_data_source"
                       class="Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider">
             <settings>
                 <requestFieldName>id</requestFieldName>
@@ -28,7 +28,7 @@
             </settings>
         </dataProvider>
     </dataSource>
-    <columns name="devlat_tracker_tracker_columns">
+    <columns name="devlat_settings_tracker_columns">
         <column name="id">
             <settings>
                 <label translate="true">ID</label>

@@ -1,0 +1,20 @@
+{
+    "devlat_settings_tracker": {
+        "column": {
+            "id": true,
+            "section": true,
+            "path": true,
+            "old_value": true,
+            "new_value": true,
+            "verified": true,
+            "configurated_at": true,
+            "checked": true
+        },
+        "index": {
+            "DEVLAT_SETTINGS_TRACKER_PATH": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}
