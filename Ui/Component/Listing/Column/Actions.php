@@ -41,6 +41,17 @@ class Actions extends Column
                         ],
                     ),
                     'label' => __('Verify & Update'),
+                ],
+                'delete' => [
+                    'href' => $this->urlBuilder->getUrl('config/tracker/delete', [
+                        'id' => $item['id'],
+                    ],
+                    ),
+                    'label' => __('Delete Log'),
+                    'confirm' => [
+                        'title' => __('Delete Log'),
+                        'message' => __('Are you sure you want to delete this item from section %1?', $item['section']),
+                    ]
                 ]
             ];
         }
