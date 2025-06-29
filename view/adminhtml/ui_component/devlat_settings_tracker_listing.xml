@@ -28,7 +28,31 @@
             </settings>
         </dataProvider>
     </dataSource>
+    <listingToolbar name="listing_top">
+        <settings>
+            <sticky>true</sticky>
+        </settings>
+        <paging name="listing_paging" />
+        <columnsControls name="columns_controls" />
+
+        <bookmark name="bookmarks" />
+    </listingToolbar>
     <columns name="devlat_settings_tracker_columns">
+        <!-- Click in one of the rows of the table in order to redirect to edit page !-->
+        <settings>
+            <childDefaults>
+                <param name="fieldAction" xsi:type="array">
+                    <item name="provider" xsi:type="string">
+                        devlat_settings_tracker_listing.devlat_settings_tracker_listing.devlat_settings_tracker_columns.actions
+                    </item>
+                    <item name="target" xsi:type="string">applyAction</item>
+                    <item name="params" xsi:type="array">
+                        <item name="0" xsi:type="string">edit</item>
+                        <item name="1" xsi:type="string">${ $.$data.rowIndex }</item>
+                    </item>
+                </param>
+            </childDefaults>
+        </settings>
         <column name="id">
             <settings>
                 <label translate="true">ID</label>
