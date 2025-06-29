@@ -16,7 +16,8 @@
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id" />
         </constraint>
-        <index referenceId="DEVLAT_SETTINGS_TRACKED_PATH" indexType="fulltext">
+        <!-- reference Id is considered: (<TABLE-NAME>_<COLUMN>) for the fullsearch for the grid admin. !-->
+        <index referenceId="DEVLAT_SETTINGS_TRACKER_PATH" indexType="fulltext">
             <column name="path"/>
         </index>
     </table>

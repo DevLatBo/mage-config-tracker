@@ -18,6 +18,9 @@
     <dataSource name="devlat_settings_tracker_listing_data_source" component="Magento_Ui/js/grid/provider">
         <settings>
             <updateUrl path="mui/index/render"/>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">id</param>
+            </storageConfig>
         </settings>
         <aclResource>Devlat_Settings::config_track_logs</aclResource>
         <dataProvider name="devlat_settings_tracker_listing_data_source"
@@ -34,8 +37,18 @@
         </settings>
         <paging name="listing_paging" />
         <columnsControls name="columns_controls" />
-
         <bookmark name="bookmarks" />
+        <filters name="listing_filters">
+            <!-- Sets the default filters -->
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="applied" xsi:type="array">
+                        <item name="verified" xsi:type="string">0</item>
+                    </item>
+                </item>
+            </argument>
+        </filters>
+        <filterSearch name="fulltext" />
     </listingToolbar>
     <columns name="devlat_settings_tracker_columns">
         <!-- Click in one of the rows of the table in order to redirect to edit page !-->
@@ -56,11 +69,14 @@
         <column name="id">
             <settings>
                 <label translate="true">ID</label>
+                <filter>text</filter>
+                <sorting>desc</sorting>
             </settings>
         </column>
         <column name="section">
             <settings>
                 <label translate="true">Section</label>
+                <filter>text</filter>
             </settings>
         </column>
         <column name="path">
@@ -73,16 +89,19 @@
                 <label translate="true">Verified</label>
                 <options class="Magento\Config\Model\Config\Source\Yesno"/>
                 <dataType>select</dataType>
+                <filter>select</filter>
             </settings>
         </column>
         <column name="configurated_at" component="Magento_Ui/js/grid/columns/date">
             <settings>
                 <label translate="true">Configurated At</label>
+                <filter>dateRange</filter>
             </settings>
         </column>
         <column name="checked" component="Magento_Ui/js/grid/columns/date">
             <settings>
                 <label translate="true">Checked</label>
+                <filter>dateRange</filter>
             </settings>
         </column>
         <actionsColumn name="actions" class="Devlat\Settings\Ui\Component\Listing\Column\Actions">
