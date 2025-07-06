@@ -49,6 +49,25 @@
             </argument>
         </filters>
         <filterSearch name="fulltext" />
+        <massaction name="listing_massaction" component="Magento_Ui/js/grid/tree-massactions">
+            <settings>
+                <selectProvider>
+                    devlat_settings_tracker_listing.devlat_settings_tracker_listing.devlat_settings_tracker_columns.ids
+                </selectProvider>
+                <indexField>id</indexField>
+            </settings>
+            <action name="delete">
+                <settings>
+                    <type>delete</type>
+                    <label translate="true">Delete</label>
+                    <url path="*/*/massDelete"/>
+                    <confirm>
+                        <title translate="true">Delete Items</title>
+                        <message translate="true">Are you sure you want to delete the selected items?</message>
+                    </confirm>
+                </settings>
+            </action>
+        </massaction>
     </listingToolbar>
     <columns name="devlat_settings_tracker_columns">
         <!-- Click in one of the rows of the table in order to redirect to edit page !-->
@@ -66,6 +85,11 @@
                 </param>
             </childDefaults>
         </settings>
+        <selectionsColumn name="ids">
+            <settings>
+                <indexField>id</indexField>
+            </settings>
+        </selectionsColumn>
         <column name="id">
             <settings>
                 <label translate="true">ID</label>
