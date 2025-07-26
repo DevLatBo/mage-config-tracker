@@ -4,17 +4,24 @@ namespace Devlat\Settings\Ui\DataProvider;
 
 use Magento\Ui\DataProvider\AbstractDataProvider;
 use Devlat\Settings\Model\ResourceModel\Tracker\Collection as TrackerCollection;
+use Devlat\Settings\Model\ResourceModel\Tracker\CollectionFactory as TrackerCollectionFactory;
 
 class Config extends AbstractDataProvider
 {
+    /**
+     * @var array
+     */
     private array $loadedData;
-    protected TrackerCollection $trackerCollection;
+
+    /** @var TrackerCollection  */
+    protected $collection;
+
 
     /**
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName
-     * @param TrackerCollection $trackerCollection
+     * @param TrackerCollectionFactory $trackerCollectionFactory
      * @param array $meta
      * @param array $data
      */
@@ -22,12 +29,12 @@ class Config extends AbstractDataProvider
         $name,
         $primaryFieldName,
         $requestFieldName,
-        TrackerCollection $trackerCollection,
+        TrackerCollectionFactory $trackerCollectionFactory,
         array $meta = [],
         array $data = []
     )
     {
-        $this->trackerCollection = $trackerCollection;
+        $this->collection = $trackerCollectionFactory->create();
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
 
@@ -39,8 +46,8 @@ class Config extends AbstractDataProvider
         if (!isset($this->loadedData)) {
             $this->loadedData = [];
 
-            foreach ($this->trackerCollection as $item) {
-                $this->loadedData[$item->getId()] = $item->getData();
+            foreach ($this->collection->getItems() as $item) {
+                $this->loadedData[$item->getData('id')] = $item->getData();
             }
         }
         return $this->loadedData;

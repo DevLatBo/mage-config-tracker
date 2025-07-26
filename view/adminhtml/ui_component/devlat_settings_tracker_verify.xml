@@ -3,6 +3,31 @@
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">
+                devlat_settings_tracker_verify.devlat_settings_tracker_data_source
+            </item>
+        </item>
         <item name="template" xsi:type="string">templates/form/collapsible</item>
     </argument>
+    <settings>
+        <namespace>devlat_settings_tracker_verify</namespace>
+        <dataScope>data</dataScope>
+        <deps>
+            <dep>devlat_settings_tracker_verify.devlat_settings_tracker_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="devlat_settings_tracker_data_source">
+        <argument name="data" xsi:type="array">
+            <item name="js_config" xsi:type="array">
+                <item name="component" xsi:type="string">Magento_Ui/js/form/provider</item>
+            </item>
+        </argument>
+        <dataProvider class="Devlat\Settings\Ui\DataProvider\Config" name="devlat_settings_tracker_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
 </form>
