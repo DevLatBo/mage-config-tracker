@@ -30,4 +30,28 @@
             </settings>
         </dataProvider>
     </dataSource>
+    <fieldset name="devlat_settings_tracker_fieldset">
+        <settings>
+            <label/>
+        </settings>
+        <field name="id" formElement="hidden"/>
+        <field name="section" formElement="input">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Section</label>
+            </settings>
+        </field>
+        <field name="path" formElement="input">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Path</label>
+            </settings>
+        </field>
+        <field name="configurated_at" formElement="input">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Configurated At</label>
+            </settings>
+        </field>
+    </fieldset>
 </form>
