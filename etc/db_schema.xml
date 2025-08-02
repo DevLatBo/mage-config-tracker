@@ -11,7 +11,7 @@
         <column xsi:type="boolean" name="verified" nullable="true" comment="Verified" />
         <column xsi:type="timestamp" name="configurated_at" on_update="false" nullable="false"
                 default="CURRENT_TIMESTAMP" comment="Settings Time"/>
-        <column xsi:type="timestamp" name="checked" on_update="true" nullable="false" default="CURRENT_TIMESTAMP"
+        <column xsi:type="timestamp" name="checked" on_update="true" nullable="false" default="NULL"
                 comment="Settings Checked" />
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="id" />

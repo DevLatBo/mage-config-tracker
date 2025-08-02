@@ -1,0 +1,19 @@
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $.ajax({
+            url: "<?= $block->getUrl('config/ajax/verification')?>",
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                form_key: window.FORM_KEY
+            },
+            showLoader: false,
+            success: function(response) {
+                console.log(response);
+            },
+            error: function(xhr) {
+                console.log("Error occurred.");
+            }
+        })
+    });
+</script>

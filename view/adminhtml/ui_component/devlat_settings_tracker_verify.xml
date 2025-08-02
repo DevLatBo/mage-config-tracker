@@ -53,5 +53,14 @@
                 <label translate="true">Configurated At</label>
             </settings>
         </field>
+        <field name="verified" formElement="input">
+            <settings>
+                <elementTmpl>ui/form/element/text</elementTmpl>
+                <label translate="true">Verified</label>
+            </settings>
+        </field>
+        <htmlContent name="group_title">
+            <argument name="block" xsi:type="object">Devlat\Settings\Block\Adminhtml\Verification</argument>
+        </htmlContent>
     </fieldset>
 </form>
