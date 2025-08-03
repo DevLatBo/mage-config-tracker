@@ -2,6 +2,8 @@
 
 namespace Devlat\Settings\Controller\Adminhtml\Ajax;
 
+use Devlat\Settings\Model\TrackerFactory as TrackerModelFactory;
+use Devlat\Settings\Model\ResourceModel\Tracker as TrackerResourceModel;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\App\Action\HttpPostActionInterface;
@@ -11,19 +13,48 @@ class Verification extends Action implements HttpPostActionInterface
 {
 
     private JsonFactory $resultJsonFactory;
+    private TrackerModelFactory $trackerModelFactory;
+    private TrackerResourceModel $trackerResourceModel;
 
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
+        TrackerModelFactory $trackerModelFactory,
+        TrackerResourceModel $trackerResourceModel
     )
     {
         $this->resultJsonFactory = $resultJsonFactory;
+        $this->trackerModelFactory = $trackerModelFactory;
+        $this->trackerResourceModel = $trackerResourceModel;
         parent::__construct($context);
     }
 
     public function execute()
     {
         $result = $this->resultJsonFactory->create();
+
+        $id = $this->getRequest()->getParam('id');
+
+        if(!$id) {
+            return $result->setData([
+                'success' => false,
+                'message' => __('ID not found'),
+            ]);
+        }
+
+        $tracker = $this->trackerModelFactory->create();
+        $this->trackerResourceModel->load($tracker, $id);
+
+        if (!$tracker->getId()) {
+            return $result->setData([
+                'success' => false,
+                'message' => __('Tracker requested not found.'),
+            ]);
+        }
+        $tracker->setVerified(1);
+        $this->trackerResourceModel->save($tracker);
+
+
         $result->setData([
             'success' => true,
             'message' => __('Verification successful.'),
