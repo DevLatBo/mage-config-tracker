@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
     require(['jquery'], function($) {
         $.ajax({
@@ -5,6 +6,7 @@
             type: 'POST',
             dataType: 'json',
             data: {
+                id: <?= $block->getTrackerId() ?>,
                 form_key: window.FORM_KEY
             },
             showLoader: false,

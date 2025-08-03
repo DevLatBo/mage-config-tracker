@@ -51,6 +51,13 @@ class Verification extends Action implements HttpPostActionInterface
                 'message' => __('Tracker requested not found.'),
             ]);
         }
+
+        if ($tracker->getVerified()) {
+            return $result->setData([
+                'success' => false,
+                'message' => __('Thiis item has been verified before.'),
+            ]);
+        }
         $tracker->setVerified(1);
         $this->trackerResourceModel->save($tracker);
 
