@@ -9,9 +9,23 @@ use Magento\Framework\Json\Helper\Data as JsonHelper;
 
 class Verification extends Template
 {
+    /**
+     * @var string
+     */
     protected $_template = 'confirm_verification.phtml';
+    /**
+     * @var RequestInterface
+     */
     private RequestInterface $request;
 
+    /**
+     * Constructor.
+     * @param Template\Context $context
+     * @param RequestInterface $request
+     * @param array $data
+     * @param JsonHelper|null $jsonHelper
+     * @param DirectoryHelper|null $directoryHelper
+     */
     public function __construct(
         Template\Context $context,
         RequestInterface $request,
@@ -24,7 +38,12 @@ class Verification extends Template
         parent::__construct($context, $data, $jsonHelper, $directoryHelper);
     }
 
-    public function getTrackerId() {
-        return $this->request->getParam('id');
+    /**
+     * Gets the config tracked id.
+     * @return int
+     */
+    public function getTrackerId(): int
+    {
+        return (int)$this->request->getParam('id');
     }
 }

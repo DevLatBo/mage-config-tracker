@@ -1,0 +1,9 @@
+<!-- ko if: parseInt(value()) === 1 -->
+<span class="admin__field-value" data-bind="text: 'Yes'"></span>
+<!-- /ko -->
+<!-- ko if: parseInt(value()) === 0 -->
+<span class="admin__field-value" data-bind="text: 'No'"></span>
+<!-- /ko -->
+<!-- ko if: value() !== '1' && value() !== '0' -->
+<span class="admin__field-value" data-bind="text: value"></span>
+<!-- /ko -->

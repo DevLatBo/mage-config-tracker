@@ -55,7 +55,7 @@
         </field>
         <field name="verified" formElement="input">
             <settings>
-                <elementTmpl>ui/form/element/text</elementTmpl>
+                <elementTmpl>Devlat_Settings/form/element/verified_bool</elementTmpl>
                 <label translate="true">Verified</label>
             </settings>
         </field>

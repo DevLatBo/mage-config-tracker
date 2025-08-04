@@ -43,9 +43,6 @@ class Config extends AbstractDataProvider
      */
     public function getData(): array
     {
-        $writer = new \Zend_Log_Writer_Stream(BP . '/var/log/oscar.log');
-        $logger = new \Zend_Log();
-        $logger->addWriter($writer);
         if (!isset($this->loadedData)) {
             $this->loadedData = [];
 
@@ -53,7 +50,6 @@ class Config extends AbstractDataProvider
                 $this->loadedData[$item->getData('id')] = $item->getData();
             }
         }
-        $logger->info(print_r($this->loadedData, true));
         return $this->loadedData;
     }
 }
