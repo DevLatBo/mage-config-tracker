@@ -18,6 +18,7 @@ class Config extends AbstractDataProvider
 
 
     /**
+     * Constructor.
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName

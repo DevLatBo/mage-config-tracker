@@ -9,8 +9,19 @@ use Magento\Ui\Component\Listing\Columns\Column;
 
 class Actions extends Column
 {
+    /**
+     * @var UrlInterface
+     */
     private UrlInterface $urlBuilder;
 
+    /**
+     * Constructor
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
+     * @param UrlInterface $urlBuilder
+     * @param array $components
+     * @param array $data
+     */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
@@ -23,6 +34,11 @@ class Actions extends Column
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
+    /**
+     * Options for the item in action column.
+     * @param array $dataSource
+     * @return array
+     */
     public function prepareDataSource(array $dataSource): array
     {
         if(!isset($dataSource['data']['items'])) {
