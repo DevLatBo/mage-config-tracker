@@ -13,6 +13,7 @@ se hizo, si fue verificado o revisado, cuando se configuró y se revisó.
  * [Admin Grid](#admin-grid)
  * [Deteccion Cambios Config](#deteccion-cambios-config)
  * [Revision en Cambio de Configuracion](revision-en-cambio-de-configuracion)
+ * [Bonus Info](bonus-info)
 
 ## Base de Datos
 En este móodulo creamos la tabla en la base de datos llamada `devlat_settings_tracker` en el cual tiene 
@@ -77,4 +78,99 @@ de que tiene que eliminar en la tabla `ui_bookmark` en la BD los items con names
 luego proceda con un refresh a la página.
 
 ## Deteccion Cambios Config
+Si queremos poder registrar los cambios que se hacen en el admin, necesitamos detectarlo mediante un 
+plugin y para ello lo declaramos en el di.xml dentro de `etc/adminhtml`:
+```xml
+    <type name="Magento\Config\Model\Config">
+        <plugin name="devlat_settings_save_plugin"
+                type="Devlat\Settings\Plugin\Setting\Save"
+                sortOrder="10" />
+    </type>
+```
+Precisamente en este plugin apunta a la clase `Magento\Config\Model\Config` aquí 
+empleamos el *before* al metodo Save (osea que antes de guardar la nueva configuracion 
+detectamos el cambio y lo guardamos en nuestro tracking):
+```php
+public function beforeSave(
+        Config $subject
+    ): void
+    {
+       ...
+}
+```
+Método Save no tiene ningun parámetro, por lo que es un método **void** ya que no tiene 
+ningún input que estemos alterando.
+Verificamos dentro de este plugin si la configuración se encuentra registrado primero en  
+tabla core_config_data y si está, verifica si se ha realizado un cambio en su value, si es que 
+se cambio de dato el config, se registra el cambio en tabla devlat_settings_tracker:
 
+```php
+$oldValue = $this->scopeConfig->getValue($configPath);
+$newValue = $data['value'];
+if($oldValue != $newValue) {
+    try {
+        /** @var Tracker $tracker */
+        $tracker = $this->trackerFactory->create();
+        $tracker->setSection($section);
+        $tracker->setPath($configPath);
+        $tracker->setOldValue($oldValue);
+        $tracker->setNewValue($newValue);
+        $tracker->setVerified(0);
+        $this->trackerResource->save($tracker);
+
+        $this->logger->info("Path value: {$configPath} tracked successfully.");
+
+    } catch (\Exception $e) {
+        $this->logger->info('Error: '. $$e->getMessage() );
+    }
+}
+```
+Es de esta forma se procede con el registro, éste plugin está ubicado en 
+`Devlat\Settings\Plugin\Setting\Save` para que pueda revisarlo.
+
+## Revision en Cambio de Configuracion
+Para poder visualizar en detalle el cambio de configuracion, tenemos que crear un nuevo 
+ui_component y lo tenemos declarado en el layout config_tracker_verify:
+
+```xml
+<referenceContainer name="content">
+    <uiComponent name="devlat_settings_tracker_verify"/>
+</referenceContainer>
+```
+EL ui_component `devlat_settings_tracker_verify` en todos sus datos a mostrar 
+serán solo READONLY, no se efectuara un cambio en campos como *sections, path, configurated_at y verified*.
+
+El único cambio que sera actualizado sera el de Verified que se realizará mediante una llamada en un ajax:
+```js
+$.ajax({
+    url: "<?= $block->getUrl('config/ajax/verification')?>",
+    type: 'POST',
+    dataType: 'json',
+    data: {
+        id: <?= $block->getTrackerId() ?>,
+        form_key: window.FORM_KEY
+    },
+    showLoader: false,
+    success: function(response) {
+        console.log(response);
+    },
+    error: function(xhr) {
+        console.log("Error occurred.");
+    }
+})
+```
+Este código se encuentra en un template que fue incorporado por medio de un bloque 
+dentro del ui_component:
+```xml
+<htmlContent name="group_title">
+    <argument name="block" xsi:type="object">Devlat\Settings\Block\Adminhtml\Verification</argument>
+</htmlContent>
+```
+
+De esta forma cada vez que el usuario ingresa a la página de "Verify & Update" el ajax se ejecuta.
+El estado de _Verified_ se mantiene en su estado anterior confirmando al usuario de que ese item no fué 
+revisado con anterioridad, por ejemplo:
+Si el usuario ve por primera vez el item, el Verified mantiene su valor anterior **False**, si hace refresh 
+el usuario pues Verified muestra el valor de **True** en _Verified_.
+
+## Bonus Info
