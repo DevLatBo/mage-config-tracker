@@ -174,3 +174,43 @@ Si el usuario ve por primera vez el item, el Verified mantiene su valor anterior
 el usuario pues Verified muestra el valor de **True** en _Verified_.
 
 ## Bonus Info
+Se usa un propio logger en donde se hace seguimiendo a las acciones 
+que se realizan dentro de este módulo:
+ * Al actualizar y confirmar de que se haya verificado o revisado uno de los items de la sección del Tracking.
+ * Al registrar el cambio de configuración dentro del Tracking.
+
+Se incluyó una forma de dar algo de estilo para el Verified tanto desde la grid 
+como en el otro ui_component donde se visualiza la info sobre el cambio de configuración:
+
+1. Primero para la grid en column Verified se define el component:
+```xml
+<column name="verified" component="Devlat_Settings/js/grid/columns/custom">
+    <settings>
+        <label translate="true">Verified</label>
+        <options class="Magento\Config\Model\Config\Source\Yesno"/>
+        <dataType>select</dataType>
+        <filter>select</filter>
+    </settings>
+</column> 
+```
+Justo aca es donde se define el bodyTempl y el script se valida el status del item.
+
+2. En el ui_component `devlat_settings_tracker_verify` como hicimos en la grid, 
+Definimos nuestro template en field verified:
+```xml
+<field name="verified" formElement="input">
+    <settings>
+        <elementTmpl>Devlat_Settings/form/element/verified_bool</elementTmpl>
+        <label translate="true">Verified</label>
+    </settings>
+</field> 
+```
+_verified_bool_ sera el template es donde definimos  el mensaje a mostrar dependiendo 
+el estado de verified con un "Yes" o "No".
+
+---
+
+Sigue cuidadosamente la elaboración de tu grid, puede que este README te ayude y sea de mayor
+utilidad para el desarrollo y este módulo te ahorre tiempo a futuro en tu trabajo.
+
+### **Ing. Oscar Rolando Gamboa Acho.** 🇧🇴
