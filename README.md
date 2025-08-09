@@ -12,8 +12,8 @@ se hizo, si fue verificado o revisado, cuando se configuró y se revisó.
  * [Base de Datos](#base-de-datos)
  * [Admin Grid](#admin-grid)
  * [Deteccion Cambios Config](#deteccion-cambios-config)
- * [Revision en Cambio de Configuracion](revision-en-cambio-de-configuracion)
- * [Bonus Info](bonus-info)
+ * [Revision en Cambio de Configuracion](#revision-en-cambio-de-configuracion)
+ * [Bonus Info](#bonus-info)
 
 ## Base de Datos
 En este móodulo creamos la tabla en la base de datos llamada `devlat_settings_tracker` en el cual tiene 
@@ -60,7 +60,7 @@ el layout `config_tracker_index.xml`
 
 Esta grid tiene lo siguiente:
  * **Filters**: Puedes filtrar por: id, section, verified, si fue revisado (checked) 
-(puedes establecer un rango de tiempo) y lo cuando fue configurado (configurated at).
+y entre que tiempo fue configurado (configurated at).
  * **Search by keyword**: Este campo fulltext es usado para filtrar los items de la grid por la seccion (section).
  * **Mass Action (dropdown Actions)**:Tenemos la accion para el mass delete, en el cual puedes borrar 
 entre uno o mas items a borrar.
@@ -87,7 +87,7 @@ plugin y para ello lo declaramos en el di.xml dentro de `etc/adminhtml`:
                 sortOrder="10" />
     </type>
 ```
-Precisamente en este plugin apunta a la clase `Magento\Config\Model\Config` aquí 
+Precisamente en este plugin apunta a la clase `Magento\Config\Model\Config`, en el plugin 
 empleamos el *before* al metodo Save (osea que antes de guardar la nueva configuracion 
 detectamos el cambio y lo guardamos en nuestro tracking):
 ```php
@@ -140,7 +140,7 @@ ui_component y lo tenemos declarado en el layout config_tracker_verify:
 EL ui_component `devlat_settings_tracker_verify` en todos sus datos a mostrar 
 serán solo READONLY, no se efectuara un cambio en campos como *sections, path, configurated_at y verified*.
 
-El único cambio que sera actualizado sera el de Verified que se realizará mediante una llamada en un ajax:
+El único cambio que será actualizado sera el de Verified que se realizará mediante una llamada en un ajax:
 ```js
 $.ajax({
     url: "<?= $block->getUrl('config/ajax/verification')?>",
@@ -159,7 +159,7 @@ $.ajax({
     }
 })
 ```
-Este código se encuentra en un template que fue incorporado por medio de un bloque 
+Éste código se encuentra en un template que fue incorporado por medio de un bloque 
 dentro del ui_component:
 ```xml
 <htmlContent name="group_title">
@@ -210,7 +210,7 @@ el estado de verified con un "Yes" o "No".
 
 ---
 
-Sigue cuidadosamente la elaboración de tu grid, puede que este README te ayude y sea de mayor
-utilidad para el desarrollo y este módulo te ahorre tiempo a futuro en tu trabajo.
+Espero que éste README sea de tu ayuda y de mayor
+utilidad para el desarrollo y entendimiento del módulo.
 
 ### **Ing. Oscar Rolando Gamboa Acho.** 🇧🇴
