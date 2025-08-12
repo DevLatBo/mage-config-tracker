@@ -4,7 +4,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
     <menu>
         <add id="Devlat_Settings::config_track_logs"
-             title="Settings Track Logs"
+             title="Config Tracker"
              translate="title"
              module="Devlat_Settings"
              sortOrder="30"
