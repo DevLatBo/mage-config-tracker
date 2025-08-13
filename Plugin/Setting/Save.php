@@ -6,6 +6,7 @@ use Devlat\Settings\Logger\Logger;
 use Devlat\Settings\Model\ResourceModel\Tracker as TrackerResource;
 use Devlat\Settings\Model\Tracker;
 use Devlat\Settings\Model\TrackerFactory;
+use Magento\Backend\Model\Auth\Session;
 use Magento\Config\Model\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\App\ResourceConnection;
@@ -29,15 +30,21 @@ class Save
      */
     private TrackerResource $trackerResource;
     /**
+     * @var Session
+     */
+    private Session $adminSession;
+    /**
      * @var Logger
      */
     private Logger $logger;
 
     /**
+     * Constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param TrackerFactory $trackerFactory
      * @param TrackerResource $trackerResource
      * @param ResourceConnection $resourceConnection
+     * @param Session $adminSession
      * @param Logger $logger
      */
     public function __construct(
@@ -45,6 +52,7 @@ class Save
         TrackerFactory $trackerFactory,
         TrackerResource $trackerResource,
         ResourceConnection $resourceConnection,
+        Session $adminSession,
         Logger $logger
     )
     {
@@ -52,6 +60,7 @@ class Save
         $this->resourceConnection = $resourceConnection;
         $this->trackerFactory = $trackerFactory;
         $this->trackerResource = $trackerResource;
+        $this->adminSession = $adminSession;
         $this->logger = $logger;
     }
 
@@ -69,6 +78,8 @@ class Save
 
         $section = $subject->getSection();
         $groups = $subject->getGroups();
+
+        $userId = $this->adminSession->getUser()->getId();
 
         $this->logger->info("Tracking config updates...");
 
@@ -95,6 +106,7 @@ class Save
                         $tracker = $this->trackerFactory->create();
                         $tracker->setSection($section);
                         $tracker->setPath($configPath);
+                        $tracker->setConfiguratedBy($userId);
                         $tracker->setOldValue($oldValue);
                         $tracker->setNewValue($newValue);
                         $tracker->setVerified(0);

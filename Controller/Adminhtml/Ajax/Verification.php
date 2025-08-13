@@ -7,6 +7,7 @@ use Devlat\Settings\Model\TrackerFactory as TrackerModelFactory;
 use Devlat\Settings\Model\ResourceModel\Tracker as TrackerResourceModel;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
+use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -28,6 +29,10 @@ class Verification extends Action implements HttpPostActionInterface
      */
     private TrackerResourceModel $trackerResourceModel;
     /**
+     * @var Session
+     */
+    private Session $adminSession;
+    /**
      * @var Logger
      */
     private Logger $logger;
@@ -38,6 +43,7 @@ class Verification extends Action implements HttpPostActionInterface
      * @param JsonFactory $resultJsonFactory
      * @param TrackerModelFactory $trackerModelFactory
      * @param TrackerResourceModel $trackerResourceModel
+     * @param Session $adminSession
      * @param Logger $logger
      */
     public function __construct(
@@ -45,12 +51,14 @@ class Verification extends Action implements HttpPostActionInterface
         JsonFactory $resultJsonFactory,
         TrackerModelFactory $trackerModelFactory,
         TrackerResourceModel $trackerResourceModel,
+        Session $adminSession,
         Logger $logger
     )
     {
         $this->resultJsonFactory = $resultJsonFactory;
         $this->trackerModelFactory = $trackerModelFactory;
         $this->trackerResourceModel = $trackerResourceModel;
+        $this->adminSession = $adminSession;
         $this->logger = $logger;
         parent::__construct($context);
     }
@@ -64,6 +72,7 @@ class Verification extends Action implements HttpPostActionInterface
         $result = $this->resultJsonFactory->create();
 
         $id = $this->getRequest()->getParam('id');
+        $userId = $this->adminSession->getUser()->getId();
 
         if(!$id) {
             $this->logger->error(__("No ID found in request."));
@@ -93,6 +102,7 @@ class Verification extends Action implements HttpPostActionInterface
                 ]);
             }
             $tracker->setVerified(1);
+            $tracker->setVerifiedBy($userId);
             $this->trackerResourceModel->save($tracker);
             $result->setData([
                 'success' => true,

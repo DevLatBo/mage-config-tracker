@@ -68,6 +68,23 @@ class Tracker extends AbstractModel implements TrackerInterface
         return $this->setData(self::PATH, $path);
     }
 
+    /**
+     * @return string
+     */
+    public function getConfiguratedBy(): string
+    {
+        return $this->getData(self::CONFIGURATED_BY);
+    }
+
+    /**
+     * @param $configuratedBy
+     * @return TrackerInterface
+     */
+    public function setConfiguratedBy($configuratedBy): TrackerInterface
+    {
+        return $this->setData(self::CONFIGURATED_BY, $configuratedBy);
+    }
+
     public function getOldValue(): string
     {
         return $this->getData(self::OLD_VALUE);
@@ -106,6 +123,23 @@ class Tracker extends AbstractModel implements TrackerInterface
     }
 
     /**
+     * @return string
+     */
+    public function getVerifiedBy(): string
+    {
+        return $this->getData(self::VERIFIED_BY);
+    }
+
+    /**
+     * @param $verifiedBy
+     * @return TrackerInterface
+     */
+    public function setVerifiedBy($verifiedBy): TrackerInterface
+    {
+        return $this->setData(self::VERIFIED_BY, $verifiedBy);
+    }
+
+    /**
      * @return \DateTime
      */
     public function getConfiguredAt(): \DateTime
@@ -138,4 +172,5 @@ class Tracker extends AbstractModel implements TrackerInterface
     {
         return $this->setData(self::CHECKED_AT, $checkedAt);
     }
+
 }

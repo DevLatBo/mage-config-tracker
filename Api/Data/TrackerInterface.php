@@ -7,9 +7,11 @@ interface TrackerInterface
     const ENTITY_ID = 'id';
     const SECTION = 'section';
     const PATH = 'path';
+    const CONFIGURATED_BY = 'configurated_by';
     const OLD_VALUE = 'old_value';
     const NEW_VALUE = 'new_value';
     const VERIFIED = 'verified';
+    const VERIFIED_BY = 'verified_by';
     const CONFIGURATED_AT = 'configured_at';
     const CHECKED_AT = 'checked_at';
 
@@ -49,6 +51,16 @@ interface TrackerInterface
     /**
      * @return string
      */
+    public function getConfiguratedBy(): string;
+
+    /**
+     * @param $configuratedBy
+     * @return $this
+     */
+    public function setConfiguratedBy($configuratedBy): self;
+    /**
+     * @return string
+     */
     public function getOldValue(): string;
 
     /**
@@ -78,6 +90,17 @@ interface TrackerInterface
      * @return $this
      */
     public function setVerified($verified): self;
+
+    /**
+     * @return string
+     */
+    public function getVerifiedBy(): string;
+
+    /**
+     * @param $verifiedBy
+     * @return $this
+     */
+    public function setVerifiedBy($verifiedBy): self;
 
     /**
      * @return \DateTime

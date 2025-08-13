@@ -6,9 +6,11 @@
         <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" comment="ID" />
         <column xsi:type="varchar" name="section" nullable="false" length="64" comment="Section Config" />
         <column xsi:type="varchar" name="path" nullable="false" length="64" comment="Config Path Name" />
-        <column xsi:type="varchar" name="old_value" nullable="false" length="128" comment="Old Config Value"/>
-        <column xsi:type="varchar" name="new_value" nullable="false" length="128" comment="New Config Value"/>
+        <column xsi:type="int" name="configurated_by" nullable="true" unsigned="true" comment="Configurated By"/>
+        <column xsi:type="varchar" name="old_value" nullable="false" length="128" comment="Old Config Value" />
+        <column xsi:type="varchar" name="new_value" nullable="false" length="128" comment="New Config Value" />
         <column xsi:type="boolean" name="verified" nullable="true" comment="Verified" />
+        <column xsi:type="int" name="verified_by" nullable="true" unsigned="true" comment="Verified By" />
         <column xsi:type="timestamp" name="configurated_at" on_update="false" nullable="false"
                 default="CURRENT_TIMESTAMP" comment="Settings Time"/>
         <column xsi:type="timestamp" name="checked" on_update="true" nullable="false" default="NULL"
