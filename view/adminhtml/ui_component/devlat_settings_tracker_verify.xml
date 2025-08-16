@@ -62,6 +62,12 @@
                 <label translate="true">Verified</label>
             </settings>
         </field>
+        <field name="verified_by" formElement="input">
+            <settings>
+                <elementTmpl>Devlat_Settings/form/element/list_users_verified</elementTmpl>
+                <label translate="true">Verified By</label>
+            </settings>
+        </field>
         <htmlContent name="group_title">
             <argument name="block" xsi:type="object">Devlat\Settings\Block\Adminhtml\Verification</argument>
         </htmlContent>
