@@ -13,7 +13,7 @@ interface TrackerInterface
     const VERIFIED = 'verified';
     const VERIFIED_BY = 'verified_by';
     const CONFIGURATED_AT = 'configured_at';
-    const CHECKED_AT = 'checked_at';
+    const CHECKED = 'checked';
 
     /**
      * @return int
@@ -92,9 +92,9 @@ interface TrackerInterface
     public function setVerified($verified): self;
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getVerifiedBy(): string;
+    public function getVerifiedBy(): string | null;
 
     /**
      * @param $verifiedBy
@@ -116,12 +116,12 @@ interface TrackerInterface
     /**
      * @return \DateTime
      */
-    public function getCheckedAt(): \DateTime;
+    public function getChecked(): \DateTime;
 
     /**
-     * @param $checkedAt
+     * @param $checked
      * @return $this
      */
-    public function setCheckedAt($checkedAt): self;
+    public function setChecked($checked): self;
 
 }

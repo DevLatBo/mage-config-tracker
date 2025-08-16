@@ -123,9 +123,9 @@ class Tracker extends AbstractModel implements TrackerInterface
     }
 
     /**
-     * @return string
+     * @return string | null
      */
-    public function getVerifiedBy(): string
+    public function getVerifiedBy(): string | null
     {
         return $this->getData(self::VERIFIED_BY);
     }
@@ -159,18 +159,18 @@ class Tracker extends AbstractModel implements TrackerInterface
     /**
      * @return \DateTime
      */
-    public function getCheckedAt(): \DateTime
+    public function getChecked(): \DateTime
     {
-        return $this->getData(self::CHECKED_AT);
+        return $this->getData(self::CHECKED);
     }
 
     /**
      * @param $checkedAt
      * @return TrackerInterface
      */
-    public function setCheckedAt($checkedAt): TrackerInterface
+    public function setChecked($checked): TrackerInterface
     {
-        return $this->setData(self::CHECKED_AT, $checkedAt);
+        return $this->setData(self::CHECKED, $checked);
     }
 
 }

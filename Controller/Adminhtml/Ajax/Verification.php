@@ -3,6 +3,7 @@
 namespace Devlat\Settings\Controller\Adminhtml\Ajax;
 
 use Devlat\Settings\Logger\Logger;
+use Devlat\Settings\Model\Tracker;
 use Devlat\Settings\Model\TrackerFactory as TrackerModelFactory;
 use Devlat\Settings\Model\ResourceModel\Tracker as TrackerResourceModel;
 use Magento\Backend\App\Action;
@@ -83,6 +84,7 @@ class Verification extends Action implements HttpPostActionInterface
         }
 
         try {
+            /** @var Tracker $tracker */
             $tracker = $this->trackerModelFactory->create();
             $this->trackerResourceModel->load($tracker, $id);
 
@@ -90,19 +92,29 @@ class Verification extends Action implements HttpPostActionInterface
                 $this->logger->error(__("Config tracked not found"));
                 return $result->setData([
                     'success' => false,
-                    'message' => __('COnfig tracked requested not found.'),
+                    'message' => __('Config tracked requested not found.'),
                 ]);
             }
 
             if ($tracker->getVerified()) {
-                $this->logger->alert(__('Config tracked with ID: %1 has been updated before.', $tracker->getId()));
-                return $result->setData([
-                    'success' => false,
-                    'message' => __('This item has been verified before.'),
-                ]);
+                $this->logger->alert(
+                    __('Config tracked with ID: %1 has been updated before.', $tracker->getId())
+                );
+            } else {
+                $tracker->setVerified(1);
             }
-            $tracker->setVerified(1);
-            $tracker->setVerifiedBy($userId);
+
+            $trackerUsers = $tracker->getVerifiedBy();
+            $arrayUsers = !empty($trackerUsers)
+                ? json_decode($trackerUsers, true)
+                : [];
+
+            if (!in_array($userId, $arrayUsers)) {
+                $arrayUsers[] = $userId;
+            }
+
+            $tracker->setVerifiedBy(json_encode($arrayUsers));
+
             $this->trackerResourceModel->save($tracker);
             $result->setData([
                 'success' => true,

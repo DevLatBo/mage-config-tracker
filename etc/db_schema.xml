@@ -10,7 +10,7 @@
         <column xsi:type="varchar" name="old_value" nullable="false" length="128" comment="Old Config Value" />
         <column xsi:type="varchar" name="new_value" nullable="false" length="128" comment="New Config Value" />
         <column xsi:type="boolean" name="verified" nullable="true" comment="Verified" />
-        <column xsi:type="int" name="verified_by" nullable="true" unsigned="true" comment="Verified By" />
+        <column xsi:type="text" name="verified_by" nullable="true" comment="Verified By" />
         <column xsi:type="timestamp" name="configurated_at" on_update="false" nullable="false"
                 default="CURRENT_TIMESTAMP" comment="Settings Time"/>
         <column xsi:type="timestamp" name="checked" on_update="true" nullable="false" default="NULL"
