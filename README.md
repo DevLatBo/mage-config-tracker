@@ -1,36 +1,40 @@
 # Rastreo de Cambios en Configuracion desde el Admin.
 
-Este módulo en su versión 1 está en su inicio para poder todavia seguir mejorándose 
-e implementar nuevas características y/o features para brindar una mejor experiencia.
+Este módulo en su versión 1.1 presenta mejoras en su desarrollo, hay nuevas características y/o features 
+con miras a brindar una mejor experiencia en rastreo a cambios de configuración en el admin.
 
 ### Propósito
 El módulo para Magento2 tiene por objetivo el poder registrar los cambios hechos en configuración 
 dentro del admin, en el cual registra datos como la sección, que configuración de dicha sección que
-se hizo, si fue verificado o revisado, cuando se configuró y se revisó.
+se hizo, si fue verificado o revisado, quien hizo el cambio, que usuarios
+hicieron la revisión, cuando se configuró y se revisó.
 
 ### CARACTERISTICAS
  * [Base de Datos](#base-de-datos)
  * [Admin Grid](#admin-grid)
  * [Deteccion Cambios Config](#deteccion-cambios-config)
  * [Revision en Cambio de Configuracion](#revision-en-cambio-de-configuracion)
+ * [Mejoras](#mejoras)
  * [Bonus Info](#bonus-info)
 
 ## Base de Datos
-En este móodulo creamos la tabla en la base de datos llamada `devlat_settings_tracker` en el cual tiene 
+En este módulo creamos la tabla en la base de datos llamada `devlat_settings_tracker` en el cual tiene 
 como columnas creadas:
  * id (llave primaria).
  * section (Seccion del Config).
  * path (nombre del campo de texto del cual se asigna un valor config).
+ * configurated_by (guarda el id del usuario quien hizo el cambio de configuración).
  * old_value (anterior valor del config).
  * new_value (nuevo valor del config).
  * verified (boolean el cual confirma si el cambio fue revisado).
+ * verified_by (guarda en un json array sobre que usuarios vieron los detalles del cambio).
  * configurated_at (Momento en el cual se hizo el cambio en el config).
  * checked (Momento en el cual se reviso el cambio).
 
 Tomar en cuenta que checked tiene como default NULL debido a que cuando se crea 
 este registro se debe esperar primero a que ese cambio sea revisado desde el admin.
 
-Tomar en cuenta que se tiene el model, resourceModel y Collection para esta tabla que 
+Se tiene el model, resourceModel y Collection para esta tabla que 
 se lo requerirá para gestionar los datos de esta misma tabla.
 
 ## Admin Grid
@@ -68,7 +72,7 @@ entre uno o mas items a borrar.
    * **Verify & Update**: El cual consiste en direccionar al usuario para ver los detalles del cambio de configuración.
    * **Delete**: Borra el item del tracking que se registró.
 
-Cabe tambien declarar que tenemos opcion Columns en la parte superior para habilitar o deshabilitar columnas que
+Cabe tambien declarar que tenemos opción Columns en la parte superior para habilitar o deshabilitar columnas que
 queremos visualizar.
 
 El default view es para poder guardar la vista actual de la grid.
@@ -129,7 +133,11 @@ Es de esta forma se procede con el registro, éste plugin está ubicado en
 `Devlat\Settings\Plugin\Setting\Save` para que pueda revisarlo.
 
 ## Revision en Cambio de Configuracion
-Para poder visualizar en detalle el cambio de configuracion, tenemos que crear un nuevo 
+Para esta sección damos a conocer el DataProvider en el cual obtenemos los datos del 
+item que se ha accedido para su verificación en el cual se obtiene los datos del 
+tracker item en class `Devlat\Settings\Ui\DataProvider\Config`.
+
+Para poder visualizar en detalle el cambio de configuración, tenemos que crear un nuevo 
 ui_component y lo tenemos declarado en el layout config_tracker_verify:
 
 ```xml
@@ -173,6 +181,14 @@ revisado con anterioridad, por ejemplo:
 Si el usuario ve por primera vez el item, el Verified mantiene su valor anterior **False**, si hace refresh 
 el usuario pues Verified muestra el valor de **True** en _Verified_.
 
+## Mejoras
+Para esta **versión 1.1** se tien las siguientes mejoras realizadas:
+* Se ha creado dos nuevas columnas para la tabla `devlat_settings_tracker`: `configurated_by`, `verified_by`
+* Estilos para una mejor interacción en la sección Tracker Logs del admin.
+* Validación en el DataProvider.
+* Muestra de lista de usuarios que realizaron la verificación.
+
+
 ## Bonus Info
 Se usa un propio logger en donde se hace seguimiendo a las acciones 
 que se realizan dentro de este módulo:
@@ -204,9 +220,20 @@ Definimos nuestro template en field verified:
         <label translate="true">Verified</label>
     </settings>
 </field> 
+...
+<field name="verified_by" formElement="input">
+<settings>
+    <elementTmpl>Devlat_Settings/form/element/list_users_verified</elementTmpl>
+    <label translate="true">Verified By</label>
+</settings>
+</field>
+...
 ```
-_verified_bool_ sera el template es donde definimos  el mensaje a mostrar dependiendo 
+_verified_bool_ es el template es donde definimos  el mensaje a mostrar dependiendo 
 el estado de verified con un "Yes" o "No".
+
+_list_user_verified_ es el template donde mostramos la lista de usuarios que realizaron una 
+anterior verificación.
 
 ---
 
