@@ -1,10 +1,13 @@
 div.verified, div.not-verified,
 span.verified, span.not-verified {
-    display: block;
+    display: flex;
     font-weight: bold;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
     text-transform: uppercase;
     width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 div.verified, span.verified {
     background: #D0E5A9 none repeat scroll 0 0;
@@ -24,4 +27,27 @@ div.verified, div.not-verified {
 /* Item Verification Page. */
 span.verified, span.not-verified {
     padding: 6px 3px;
+}
+
+/* Verifiers List Styling. */
+.verifiers-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 200px;
+}
+.verifiers-list li {
+    background-color: #FFD5C2;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.3s, transform 0.2s;
+}
+.verifiers-list li:hover {
+    background-color: #D35400;
+    color: white;
+    transform: scale(1.05);
 }
