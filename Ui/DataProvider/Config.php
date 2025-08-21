@@ -23,9 +23,9 @@ class Config extends AbstractDataProvider
 
 
     /**
-     * @param $name
-     * @param $primaryFieldName
-     * @param $requestFieldName
+     * @param string $name
+     * @param string $primaryFieldName
+     * @param string $requestFieldName
      * @param TrackerCollectionFactory $trackerCollectionFactory
      * @param UserCollectionFactory $userCollectionFactory
      * @param array $meta

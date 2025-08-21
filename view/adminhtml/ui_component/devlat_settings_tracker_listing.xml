@@ -108,12 +108,22 @@
                 <label translate="true">Path</label>
             </settings>
         </column>
+        <column name="configurated_by">
+            <settings>
+                <label translate="true">Configurated By</label>
+            </settings>
+        </column>
         <column name="verified" component="Devlat_Settings/js/grid/columns/custom">
             <settings>
                 <label translate="true">Verified</label>
                 <options class="Magento\Config\Model\Config\Source\Yesno"/>
                 <dataType>select</dataType>
                 <filter>select</filter>
+            </settings>
+        </column>
+        <column name="verified_by">
+            <settings>
+                <label translate="true">Verified By</label>
             </settings>
         </column>
         <column name="configurated_at" component="Magento_Ui/js/grid/columns/date">
