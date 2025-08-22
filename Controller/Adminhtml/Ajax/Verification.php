@@ -12,7 +12,6 @@ use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Magento\Framework\Exception\AlreadyExistsException;
 
 class Verification extends Action implements HttpPostActionInterface
 {

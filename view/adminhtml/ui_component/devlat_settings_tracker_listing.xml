@@ -108,7 +108,7 @@
                 <label translate="true">Path</label>
             </settings>
         </column>
-        <column name="configurated_by">
+        <column name="configurated_by" class="Devlat\Settings\Ui\Component\Listing\Column\ConfiguratedBy">
             <settings>
                 <label translate="true">Configurated By</label>
             </settings>
@@ -121,7 +121,7 @@
                 <filter>select</filter>
             </settings>
         </column>
-        <column name="verified_by">
+        <column name="verified_by" class="Devlat\Settings\Ui\Component\Listing\Column\VerifiedBy">
             <settings>
                 <label translate="true">Verified By</label>
             </settings>
@@ -138,8 +138,6 @@
                 <filter>dateRange</filter>
             </settings>
         </column>
-        <actionsColumn name="actions" class="Devlat\Settings\Ui\Component\Listing\Column\Actions">
-
-        </actionsColumn>
+        <actionsColumn name="actions" class="Devlat\Settings\Ui\Component\Listing\Column\Actions"/>
     </columns>
 </listing>
