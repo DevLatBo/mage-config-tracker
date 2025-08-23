@@ -6,7 +6,7 @@ define([
 
     return Column.extend({
        defaults: {
-           bodyTmpl: 'Devlat_Settings/ui/grid/cells/text'
+           bodyTmpl: 'Devlat_Settings/ui/grid/cells/verified'
        },
         getOrderStatusColor: function (row) {
            if (row.verified == '0') {

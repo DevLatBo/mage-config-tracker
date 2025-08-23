@@ -108,12 +108,14 @@
                 <label translate="true">Path</label>
             </settings>
         </column>
-        <column name="configurated_by" class="Devlat\Settings\Ui\Component\Listing\Column\ConfiguratedBy">
+        <column name="configurated_by"
+                component="Devlat_Settings/js/grid/columns/configuratedBy"
+                class="Devlat\Settings\Ui\Component\Listing\Column\ConfiguratedBy">
             <settings>
                 <label translate="true">Configurated By</label>
             </settings>
         </column>
-        <column name="verified" component="Devlat_Settings/js/grid/columns/custom">
+        <column name="verified" component="Devlat_Settings/js/grid/columns/verified">
             <settings>
                 <label translate="true">Verified</label>
                 <options class="Magento\Config\Model\Config\Source\Yesno"/>
@@ -121,7 +123,9 @@
                 <filter>select</filter>
             </settings>
         </column>
-        <column name="verified_by" class="Devlat\Settings\Ui\Component\Listing\Column\VerifiedBy">
+        <column name="verified_by"
+                component="Devlat_Settings/js/grid/columns/verifiedBy"
+                class="Devlat\Settings\Ui\Component\Listing\Column\VerifiedBy">
             <settings>
                 <label translate="true">Verified By</label>
             </settings>
