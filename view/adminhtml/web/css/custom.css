@@ -19,6 +19,18 @@ div.not-verified, span.not-verified {
     border: 1px solid #E22626;
     color: #E22626;
 }
+div.username {
+    background: #F2F6FC;
+    border: 1px solid #2F4A70;
+    color: #2F4A70;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    margin: 0 auto;
+}
 /* Grid Page. */
 div.verified, div.not-verified {
     margin: 0 auto;

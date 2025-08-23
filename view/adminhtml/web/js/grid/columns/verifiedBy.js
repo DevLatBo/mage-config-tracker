@@ -8,7 +8,6 @@ define([
             bodyTmpl: 'Devlat_Settings/ui/grid/cells/verifiedBy'
         },
         getVerifiers: function (row) {
-            console.log("no?");
             return row.verified_by;
         }
     });
