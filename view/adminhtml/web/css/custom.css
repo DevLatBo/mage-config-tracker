@@ -19,6 +19,11 @@ div.not-verified, span.not-verified {
     border: 1px solid #E22626;
     color: #E22626;
 }
+/* Grid Page. */
+div.verified, div.not-verified {
+    margin: 0 auto;
+    padding: 0 3px;
+}
 div.username {
     background: #F2F6FC;
     border: 1px solid #2F4A70;
@@ -31,24 +36,36 @@ div.username {
     white-space: normal;
     margin: 0 auto;
 }
-/* Grid Page. */
-div.verified, div.not-verified {
+ul.grid-verifiedby {
+    list-style: none;
+    padding: 0;
     margin: 0 auto;
-    padding: 0 3px;
+    width: 100px;
 }
+ul.grid-verifiedby li {
+    background: #F2F6FC;
+    border: 1px solid #2F4A70;
+    color: #2F4A70;
+    text-align: center;
+    font-weight: bold;
+    overflow-wrap: break-word;
+    white-space: normal;
+    margin: 15px 0;
+}
+
 /* Item Verification Page. */
 span.verified, span.not-verified {
     padding: 6px 3px;
 }
 
-/* Verifiers List Styling. */
-.verifiers-list {
+/* Verifiers List Styling in Form Element. */
+.form-element-verifiedby {
     list-style: none;
     padding: 0;
     margin: 0;
     width: 200px;
 }
-.verifiers-list li {
+.form-element-verifiedby li {
     background-color: #FFD5C2;
     padding: 12px 15px;
     margin-bottom: 8px;
@@ -58,7 +75,7 @@ span.verified, span.not-verified {
     border-radius: 6px;
     transition: background 0.3s, transform 0.2s;
 }
-.verifiers-list li:hover {
+.form-element-verifiedby li:hover {
     background-color: #D35400;
     color: white;
     transform: scale(1.05);

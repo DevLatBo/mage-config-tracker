@@ -9,6 +9,14 @@ define([
         },
         getConfiguratedBy: function (row) {
             return row.configurated_by;
+        },
+        hasConfiguratedBy: function (row) {
+            var configBy = row.configurated_by;
+            var flag = false;
+            if (configBy) {
+               flag = true;
+            }
+            return flag;
         }
     });
 });

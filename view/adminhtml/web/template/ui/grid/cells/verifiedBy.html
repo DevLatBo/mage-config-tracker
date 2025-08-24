@@ -1,1 +1,5 @@
-<div text="$col.getVerifiers($row())"/>
+<!-- ko if: $col.hasVerifiers($row()) -->
+    <ul data-bind="foreach: $col.getVerifiers($row())" class="grid-verifiedby">
+        <li data-bind="text: $data"></li>
+    </ul>
+<!-- /ko -->
