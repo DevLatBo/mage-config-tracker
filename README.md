@@ -1,6 +1,6 @@
 # Rastreo de Cambios en Configuracion desde el Admin.
 
-Este módulo en su versión 1.1 presenta mejoras en su desarrollo, hay nuevas características y/o features 
+Este módulo en su versión 1.1.1 presenta mejoras en su desarrollo, hay nuevas características y/o features 
 con miras a brindar una mejor experiencia en rastreo a cambios de configuración en el admin.
 
 ### Propósito
@@ -61,7 +61,12 @@ el layout `config_tracker_index.xml`
         <uiComponent name="devlat_settings_tracker_listing" />
     </referenceContainer>
 ```
-
+Para esta grid agregamos un archivo CSS en el cual podremos agregar algunos estilos:
+```xml
+<head>
+    <css src="Devlat_Settings::css/custom.css" />
+</head>
+```
 Esta grid tiene lo siguiente:
  * **Filters**: Puedes filtrar por: id, section, verified, si fue revisado (checked) 
 y entre que tiempo fue configurado (configurated at).
@@ -75,7 +80,7 @@ entre uno o mas items a borrar.
 Cabe tambien declarar que tenemos opción Columns en la parte superior para habilitar o deshabilitar columnas que
 queremos visualizar.
 
-El default view es para poder guardar la vista actual de la grid.
+**Save View As...** es para poder guardar la vista actual de la grid.
 
 **IMPORTANTE:** Si hace un cambio en la grid o cambia el orden de las columnas de la misma, y no ve los cambios. Recuerde 
 de que tiene que eliminar en la tabla `ui_bookmark` en la BD los items con namespace: `devlat_settings_tracker_listing`, 
@@ -145,8 +150,16 @@ ui_component y lo tenemos declarado en el layout config_tracker_verify:
     <uiComponent name="devlat_settings_tracker_verify"/>
 </referenceContainer>
 ```
-EL ui_component `devlat_settings_tracker_verify` en todos sus datos a mostrar 
-serán solo READONLY, no se efectuara un cambio en campos como *sections, path, configurated_at y verified*.
+Como en la grid incluimos un archivo CSS, de igual forma lo incluimos 
+para esta sección para agregar estilos:
+```xml
+<head>
+    <css src="Devlat_Settings::css/custom.css" />
+</head>
+```
+
+El ui_component `devlat_settings_tracker_verify` no mostrará un form con inputs, 
+solo READONLY, no se efectuara un cambio en campos como *sections, path, configurated_at y verified*.
 
 El único cambio que será actualizado sera el de Verified que se realizará mediante una llamada en un ajax:
 ```js
@@ -182,12 +195,11 @@ Si el usuario ve por primera vez el item, el Verified mantiene su valor anterior
 el usuario pues Verified muestra el valor de **True** en _Verified_.
 
 ## Mejoras
-Para esta **versión 1.1** se tien las siguientes mejoras realizadas:
-* Se ha creado dos nuevas columnas para la tabla `devlat_settings_tracker`: `configurated_by`, `verified_by`
-* Estilos para una mejor interacción en la sección Tracker Logs del admin.
-* Validación en el DataProvider.
-* Muestra de lista de usuarios que realizaron la verificación.
-
+Para esta **versión 1.1.1** se tien las siguientes mejoras realizadas:
+* Ajustes en estilos.
+* Se agregó dos columnas `configurated_by` y `verified_by`.
+* Se customizó las dos columnas mencionadas dandole estilos para hacerlo mas presentable.
+* Mapeo de de datos y validación en DataProvider.
 
 ## Bonus Info
 Se usa un propio logger en donde se hace seguimiendo a las acciones 
@@ -234,6 +246,32 @@ el estado de verified con un "Yes" o "No".
 
 _list_user_verified_ es el template donde mostramos la lista de usuarios que realizaron una 
 anterior verificación.
+
+3. Para las colunas de *Verified by* y *Configurated by* se customizaron para dar una 
+mejor presentación a la grid.
+```xml
+<column name="configurated_by"
+        component="Devlat_Settings/js/grid/columns/configuratedBy"
+        class="Devlat\Settings\Ui\Component\Listing\Column\ConfiguratedBy">
+    <settings>
+        <label translate="true">Configurated By</label>
+    </settings>
+</column>
+...
+<column name="verified_by"
+        component="Devlat_Settings/js/grid/columns/verifiedBy"
+        class="Devlat\Settings\Ui\Component\Listing\Column\VerifiedBy">
+    <settings>
+        <label translate="true">Verified By</label>
+    </settings>
+</column>
+```
+Tomar encuenta de que ambas columnas en primera instancia son IDs por lo cual 
+mostramos el username que se los obtienen directo en `class` por consultas a la BD.
+
+El `component` es útil para la validacion de los datos y el estilo al que se le 
+proporcionará.
+
 
 ---
 
