@@ -17,9 +17,9 @@ div.verified, span.verified {
 div.not-verified, span.not-verified {
     background: #F9D4D4 none repeat scroll 0 0;
     border: 1px solid #E22626;
-    color: #E22626;
+    color: #CC4E00;
 }
-/* Grid Page. */
+/* === Grid Page. === */
 div.verified, div.not-verified {
     margin: 0 auto;
     padding: 0 3px;
@@ -53,12 +53,10 @@ ul.grid-verifiedby li {
     margin: 15px 0;
 }
 
-/* Item Verification Page. */
+/* === Verify & Update Page  === */
 span.verified, span.not-verified {
     padding: 6px 3px;
 }
-
-/* Verifiers List Styling in Form Element. */
 .form-element-verifiedby {
     list-style: none;
     padding: 0;
