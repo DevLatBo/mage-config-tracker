@@ -64,7 +64,7 @@ el layout `config_tracker_index.xml`
 Para esta grid agregamos un archivo CSS en el cual podremos agregar algunos estilos:
 ```xml
 <head>
-    <css src="Devlat_Settings::css/custom.css" />
+    <css src="Devlat_Settings::css/admin_tracker_styling.css" />
 </head>
 ```
 Esta grid tiene lo siguiente:
@@ -154,7 +154,7 @@ Como en la grid incluimos un archivo CSS, de igual forma lo incluimos
 para esta sección para agregar estilos:
 ```xml
 <head>
-    <css src="Devlat_Settings::css/custom.css" />
+    <css src="Devlat_Settings::css/admin_tracker_styling.css" />
 </head>
 ```
 

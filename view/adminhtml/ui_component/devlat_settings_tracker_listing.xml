@@ -95,12 +95,16 @@
                 <label translate="true">ID</label>
                 <filter>text</filter>
                 <sorting>desc</sorting>
+                <visible>false</visible>
             </settings>
         </column>
         <column name="section">
             <settings>
                 <label translate="true">Section</label>
                 <filter>text</filter>
+                <fieldClass>
+                    <class name="center-column">true</class>
+                </fieldClass>
             </settings>
         </column>
         <column name="path">
@@ -134,12 +138,18 @@
             <settings>
                 <label translate="true">Configurated At</label>
                 <filter>dateRange</filter>
+                <fieldClass>
+                    <class name="center-column">true</class>
+                </fieldClass>
             </settings>
         </column>
         <column name="checked" component="Magento_Ui/js/grid/columns/date">
             <settings>
                 <label translate="true">Checked</label>
                 <filter>dateRange</filter>
+                <fieldClass>
+                    <class name="center-column">true</class>
+                </fieldClass>
             </settings>
         </column>
         <actionsColumn name="actions" class="Devlat\Settings\Ui\Component\Listing\Column\Actions"/>

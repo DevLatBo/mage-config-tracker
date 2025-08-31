@@ -1,3 +1,9 @@
+table.data-grid th {
+    text-align: center;
+}
+td.center-column {
+    text-align: center;
+}
 div.verified, div.not-verified,
 span.verified, span.not-verified {
     display: flex;
