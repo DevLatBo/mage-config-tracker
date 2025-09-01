@@ -1,9 +1,3 @@
-table.data-grid th {
-    text-align: center;
-}
-td.center-column {
-    text-align: center;
-}
 div.verified, div.not-verified,
 span.verified, span.not-verified {
     display: flex;
@@ -26,6 +20,24 @@ div.not-verified, span.not-verified {
     color: #CC4E00;
 }
 /* === Grid Page. === */
+table.data-grid th {
+    text-align: center;
+}
+td.center-column {
+    text-align: center;
+}
+table.data-grid tbody tr {
+    transition: all .5s ease-in-out;
+}
+table.data-grid  tbody tr:hover {
+    transform: scale(1.02);
+    box-shadow: 3px 5px 5px #888888;
+    position: relative;
+    z-index: 100;
+}
+table.data-grid tbody tr:hover td {
+    background-color: #FDE2D5;
+}
 div.verified, div.not-verified {
     margin: 0 auto;
     padding: 0 3px;
