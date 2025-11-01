@@ -103,18 +103,24 @@ class Verification extends Action implements HttpPostActionInterface
                 $tracker->setVerified(1);
             }
 
-            $trackerUsers = $tracker->getVerifiedBy();
-            $arrayUsers = !empty($trackerUsers)
-                ? json_decode($trackerUsers, true)
+            $verifiedByData     =   $tracker->getVerifiedBy();
+            $arrayVerifiedBy    =   !empty($verifiedByData)
+                ? json_decode($verifiedByData, true)
                 : [];
-
-            if (!in_array($userId, $arrayUsers)) {
-                $arrayUsers[] = $userId;
+            $this->logger->info(print_r($arrayVerifiedBy, true));
+            if (!isset($arrayVerifiedBy[$userId])) {
+                $arrayVerifiedBy[$userId] = array(
+                    'counter' => 1,
+                );
+            } else {
+                $arrayVerifiedBy[$userId]['counter']++;
             }
 
-            $tracker->setVerifiedBy(json_encode($arrayUsers));
+            $this->logger->info(print_r($arrayVerifiedBy,true));
+            $tracker->setVerifiedBy(json_encode($arrayVerifiedBy));
 
             $this->trackerResourceModel->save($tracker);
+
             $result->setData([
                 'success' => true,
                 'message' => __('Verification successful.'),
