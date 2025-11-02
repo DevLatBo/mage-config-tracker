@@ -57,9 +57,13 @@ class Config extends AbstractDataProvider
                 $data = $item->getData();
 
                 // In this part the verified_by is populated with username data instead of ids.
-                $userIds = !is_null($data['verified_by']) ? json_decode($data['verified_by'], true) : [];
+                $verifiedByData = !is_null($data['verified_by']) ? json_decode($data['verified_by'], true) : [];
                 $usernames = [];
-                if (!empty($userIds)) {
+                if (!empty($verifiedByData)) {
+                    $userIds = [];
+                    foreach ($verifiedByData as $userId => $verified) {
+                        $userIds[] = $userId;
+                    }
                    $adminUserCollection = $this->userCollectionFactory->create()
                     ->addFieldToFilter('user_id', ['in' => $userIds]);
 

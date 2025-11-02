@@ -107,7 +107,7 @@ class Verification extends Action implements HttpPostActionInterface
             $arrayVerifiedBy    =   !empty($verifiedByData)
                 ? json_decode($verifiedByData, true)
                 : [];
-            $this->logger->info(print_r($arrayVerifiedBy, true));
+
             if (!isset($arrayVerifiedBy[$userId])) {
                 $arrayVerifiedBy[$userId] = array(
                     'counter' => 1,
@@ -116,9 +116,7 @@ class Verification extends Action implements HttpPostActionInterface
                 $arrayVerifiedBy[$userId]['counter']++;
             }
 
-            $this->logger->info(print_r($arrayVerifiedBy,true));
             $tracker->setVerifiedBy(json_encode($arrayVerifiedBy));
-
             $this->trackerResourceModel->save($tracker);
 
             $result->setData([
