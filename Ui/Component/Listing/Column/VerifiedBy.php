@@ -53,12 +53,17 @@ class VerifiedBy extends Column
         if (isset($dataSource['data']['items'])) {
             foreach ($dataSource['data']['items'] as & $item) {
                 if (isset($item['verified_by']) && !empty($item['verified_by'])) {
-                    $verifiedBy = json_decode($item['verified_by'], true);
+                    $verifiedByData = !is_null($item['verified_by']) ? json_decode($item['verified_by'], true) : [];
+                    $adminUsers = [];
+                    if (!empty($verifiedByData)) {
+                        $adminUserIds = array_keys($verifiedByData);
+                        $adminUserIds = array_map('intval', $adminUserIds);
+                        $adminUsersCollection = $this->userCollectionFactory->create()
+                            ->addFieldToFilter("user_id", ["in" => $adminUserIds])
+                            ->addFieldToSelect("username");
+                        $adminUsers = $adminUsersCollection->getColumnValues("username");
+                    }
 
-                    $adminUsersCollection = $this->userCollectionFactory->create()
-                        ->addFieldToFilter("user_id", ["in" => $verifiedBy])
-                        ->addFieldToSelect("username");
-                    $adminUsers = $adminUsersCollection->getColumnValues("username");
 
                     $item['verified_by'] = $adminUsers;
                 }

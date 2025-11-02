@@ -1,3 +1,6 @@
 <ul data-bind="foreach: value()" class="form-element-verifiedby">
-    <li data-bind="text: $data"></li>
+    <li>
+        <span data-bind="text: username"></span>
+        (<span data-bind="text: counter"></span>)
+    </li>
 </ul>

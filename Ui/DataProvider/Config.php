@@ -58,18 +58,29 @@ class Config extends AbstractDataProvider
 
                 // In this part the verified_by is populated with username data instead of ids.
                 $verifiedByData = !is_null($data['verified_by']) ? json_decode($data['verified_by'], true) : [];
-                $usernames = [];
+                $adminUsernames = [];
                 if (!empty($verifiedByData)) {
-                    $userIds = [];
-                    foreach ($verifiedByData as $userId => $verified) {
-                        $userIds[] = $userId;
-                    }
-                   $adminUserCollection = $this->userCollectionFactory->create()
-                    ->addFieldToFilter('user_id', ['in' => $userIds]);
+                    $userIds = array_keys($verifiedByData);
+                    $userIds = array_map('intval', $userIds);
+                    $adminUserCollection = $this->userCollectionFactory->create()
+                        ->addFieldToSelect(['user_id', 'username'])
+                        ->addFieldToFilter('user_id', ['in' => $userIds]);
 
-                   $usernames = $adminUserCollection->getColumnValues('username');
+                    $userMap = [];
+                    foreach ($adminUserCollection as $user) {
+                        $userMap[$user->getUserId()] = $user->getUsername();
+                    }
+
+                    // new array built with username and counter.
+                    foreach ($verifiedByData as $userId => $info) {
+                        $username = isset($userMap[$userId]) ? $userMap[$userId] : null;
+                        $adminUsernames[] = [
+                            'username' => $username,
+                            'counter' => $info['counter']
+                        ];
+                    }
                 }
-                $data['verified_by'] = $usernames;
+                $data['verified_by'] = $adminUsernames;
 
                 $this->loadedData[$item->getData('id')] = $data;
             }
