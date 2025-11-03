@@ -1,13 +1,13 @@
 # Rastreo de Cambios en Configuracion desde el Admin.
 
-Este módulo en su versión 1.1.1 presenta mejoras en su desarrollo, hay nuevas características y/o features 
+Este módulo en su versión 1.2.0 presenta mejoras en su desarrollo, hay nuevas características y/o features 
 con miras a brindar una mejor experiencia en rastreo a cambios de configuración en el admin.
 
 ### Propósito
 El módulo para Magento2 tiene por objetivo el poder registrar los cambios hechos en configuración 
 dentro del admin, en el cual registra datos como la sección, que configuración de dicha sección que
 se hizo, si fue verificado o revisado, quien hizo el cambio, que usuarios
-hicieron la revisión, cuando se configuró y se revisó.
+hicieron la revisión , cuando se configuró y se revisó y cuantas veces se revisó el reporte.
 
 ### CARACTERISTICAS
  * [Base de Datos](#base-de-datos)
@@ -27,7 +27,7 @@ como columnas creadas:
  * old_value (anterior valor del config).
  * new_value (nuevo valor del config).
  * verified (boolean el cual confirma si el cambio fue revisado).
- * verified_by (guarda en un json array sobre que usuarios vieron los detalles del cambio).
+ * verified_by (guarda en un json array sobre que usuarios y cuantas veces vieron los detalles del cambio).
  * configurated_at (Momento en el cual se hizo el cambio en el config).
  * checked (Momento en el cual se reviso el cambio).
 
@@ -122,6 +122,7 @@ if($oldValue != $newValue) {
         $tracker = $this->trackerFactory->create();
         $tracker->setSection($section);
         $tracker->setPath($configPath);
+        $tracker->setConfiguratedBy($userId);
         $tracker->setOldValue($oldValue);
         $tracker->setNewValue($newValue);
         $tracker->setVerified(0);
@@ -195,11 +196,12 @@ Si el usuario ve por primera vez el item, el Verified mantiene su valor anterior
 el usuario pues Verified muestra el valor de **True** en _Verified_.
 
 ## Mejoras
-Para esta **versión 1.1.1** se tien las siguientes mejoras realizadas:
+Para esta **versión 1.2.0** se tienen las siguientes mejoras realizadas:
 * Ajustes en estilos.
-* Se agregó dos columnas `configurated_by` y `verified_by`.
-* Se customizó las dos columnas mencionadas dandole estilos para hacerlo mas presentable.
+* Grid mas interactivo para el usuario con efectos css agregados.
+* Alineación de texto en el grid (header y body).
 * Mapeo de de datos y validación en DataProvider.
+* Agregando nunero de veces que se ha verificado un item en la columna Verified By en la BD.
 
 ## Bonus Info
 Se usa un propio logger en donde se hace seguimiendo a las acciones 
