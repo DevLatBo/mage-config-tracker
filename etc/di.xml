@@ -21,4 +21,13 @@
             </argument>
         </arguments>
     </type>
+
+    <!-- Registering the console command for the table devlat settings tracker removal. -->
+    <type name="Magento\Framework\Console\CommandListInterface">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="trackerCleanUp" xsi:type="object">Devlat\Settings\Console\CleanUp</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
