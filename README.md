@@ -14,6 +14,7 @@ hicieron la revisión , cuando se configuró y se revisó y cuantas veces se rev
  * [Admin Grid](#admin-grid)
  * [Deteccion Cambios Config](#deteccion-cambios-config)
  * [Revision en Cambio de Configuracion](#revision-en-cambio-de-configuracion)
+ * [Desinstalar Modulo](#desinstalar-modulo)
  * [Mejoras](#mejoras)
  * [Bonus Info](#bonus-info)
 
@@ -26,7 +27,7 @@ como columnas creadas:
  * configurated_by (guarda el id del usuario quien hizo el cambio de configuración).
  * old_value (anterior valor del config).
  * new_value (nuevo valor del config).
- * verified (boolean el cual confirma si el cambio fue revisado).
+ * verified (booleanf el cual confirma si el cambio fue revisado).
  * verified_by (guarda en un json array sobre que usuarios y cuantas veces vieron los detalles del cambio).
  * configurated_at (Momento en el cual se hizo el cambio en el config).
  * checked (Momento en el cual se reviso el cambio).
@@ -195,14 +196,18 @@ revisado con anterioridad, por ejemplo:
 Si el usuario ve por primera vez el item, el Verified mantiene su valor anterior **False**, si hace refresh 
 el usuario pues Verified muestra el valor de **True** en _Verified_.
 
-## Mejoras
-Para esta **versión 1.2.0** se tienen las siguientes mejoras realizadas:
-* Ajustes en estilos.
-* Grid mas interactivo para el usuario con efectos css agregados.
-* Alineación de texto en el grid (header y body).
-* Mapeo de de datos y validación en DataProvider.
-* Agregando nunero de veces que se ha verificado un item en la columna Verified By en la BD.
+## Desinstalar Modulo
+El proceso de desinstalación del módulo es sencillo, se puede deshabilitarlo  y borrarlo directamente o 
+puede usar el comando module:uninstall, pero no olvide tomar para éste módulo en consideracion lo siguiente:
 
+* Se ha desarrollado un nuevo comando en el cual el usuario puede ejecutar:
+`bin/magento devlat:settings:cleanup`. Hace que se elimine la tabla `devlat_settings_tracker` con toda su data.
+* El  nuevo comando le pregunta al usuario para confirmar dicha acción con el fin de evitar una ejecución accidental.
+* Si el usuario elimina la tabla, ya no será posible acceder a la página de la grid y redireccionará al home del admin.
+
+## Mejoras
+Para esta **versión 1.2.1** se tiene lo siguiente:
+* Comando bin/magento devlat:settings:cleanup para eliminar la tabla del tracking con el fin de evitar dejar datos sueltos en la BD.
 ## Bonus Info
 Se usa un propio logger en donde se hace seguimiendo a las acciones 
 que se realizan dentro de este módulo:

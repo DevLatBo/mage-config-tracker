@@ -2,9 +2,9 @@
 
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Grid Settings Tracker implementation. -->
     <preference for="Devlat\Settings\Api\Data\TrackerInterface"
                 type="Devlat\Settings\Model\Tracker" />
-
     <virtualType name="Devlat\Settings\Model\ResourceModel\Tracker\Grid\Collection"
         type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
         <arguments>
