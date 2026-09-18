@@ -1,0 +1,109 @@
+/* === Both pages: Grid and Form === */
+div.verified, div.not-verified,
+span.verified, span.not-verified {
+    display: flex;
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+div.verified, span.verified {
+    background: #D0E5A9 none repeat scroll 0 0;
+    border: 1px solid #5B8116;
+    color: #185B00;
+}
+div.not-verified, span.not-verified {
+    background: #F9D4D4 none repeat scroll 0 0;
+    border: 1px solid #E22626;
+    color: #CC4E00;
+}
+
+/* === Grid Page. === */
+table.data-grid {
+    thead {
+        th {
+            text-align: center;
+        }
+    }
+    tbody {
+        tr {
+            transition: all .5s ease-in-out;
+            &:hover {
+                transform: scale(1.02);
+                box-shadow: 3px 5px 5px #888888;
+                position: relative;
+                z-index: 100;
+                td {
+                    background-color: #FDE2D5;
+                }
+            }
+            td {
+                &.center-column {
+                    text-align: center;
+                }
+                ul.grid-verifiedby {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0 auto;
+                    width: 100px;
+                    li {
+                        background: #F2F6FC;
+                        border: 1px solid #2F4A70;
+                        color: #2F4A70;
+                        text-align: center;
+                        font-weight: bold;
+                        overflow-wrap: break-word;
+                        white-space: normal;
+                        margin: 15px 0;
+                    }
+                }
+                div.username {
+                    background: #F2F6FC;
+                    border: 1px solid #2F4A70;
+                    color: #2F4A70;
+                    width: 100px;
+                    text-align: center;
+                    font-weight: bold;
+                    word-wrap: break-word;
+                    overflow-wrap: break-word;
+                    white-space: normal;
+                    margin: 0 auto;
+                }
+                div.verified, div.not-verified {
+                    margin: 0 auto;
+                    padding: 0 3px;
+                }
+            }
+        }
+    }
+}
+
+
+/* === Verify & Update Page  === */
+span.verified, span.not-verified {
+    padding: 6px 3px;
+}
+.form-element-verifiedby {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 200px;
+    li {
+        background-color: #FFD5C2;
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        width: 100%;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: background 0.3s, transform 0.2s;
+        &:hover {
+            background-color: #D35400;
+            color: white;
+            transform: scale(1.05);
+        }
+    }
+}
