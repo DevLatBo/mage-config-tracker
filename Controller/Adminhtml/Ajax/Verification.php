@@ -3,15 +3,14 @@
 namespace Devlat\Settings\Controller\Adminhtml\Ajax;
 
 use Devlat\Settings\Logger\Logger;
-use Devlat\Settings\Model\Tracker;
-use Devlat\Settings\Model\TrackerFactory as TrackerModelFactory;
-use Devlat\Settings\Model\ResourceModel\Tracker as TrackerResourceModel;
+use Devlat\Settings\Model\Service\Verifier;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\Json;
 use Magento\Framework\Controller\Result\JsonFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class Verification extends Action implements HttpPostActionInterface
 {
@@ -21,13 +20,9 @@ class Verification extends Action implements HttpPostActionInterface
      */
     private JsonFactory $resultJsonFactory;
     /**
-     * @var TrackerModelFactory
+     * @var Verifier
      */
-    private TrackerModelFactory $trackerModelFactory;
-    /**
-     * @var TrackerResourceModel
-     */
-    private TrackerResourceModel $trackerResourceModel;
+    private Verifier $verifier;
     /**
      * @var Session
      */
@@ -41,23 +36,20 @@ class Verification extends Action implements HttpPostActionInterface
      * Constructor.
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
-     * @param TrackerModelFactory $trackerModelFactory
-     * @param TrackerResourceModel $trackerResourceModel
+     * @param Verifier $verifier
      * @param Session $adminSession
      * @param Logger $logger
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        TrackerModelFactory $trackerModelFactory,
-        TrackerResourceModel $trackerResourceModel,
+        Verifier $verifier,
         Session $adminSession,
         Logger $logger
     )
     {
         $this->resultJsonFactory = $resultJsonFactory;
-        $this->trackerModelFactory = $trackerModelFactory;
-        $this->trackerResourceModel = $trackerResourceModel;
+        $this->verifier = $verifier;
         $this->adminSession = $adminSession;
         $this->logger = $logger;
         parent::__construct($context);
@@ -71,10 +63,9 @@ class Verification extends Action implements HttpPostActionInterface
     {
         $result = $this->resultJsonFactory->create();
 
-        $id = $this->getRequest()->getParam('id');
-        $userId = $this->adminSession->getUser()->getId();
+        $id = (int)$this->getRequest()->getParam('id');
 
-        if(!$id) {
+        if (!$id) {
             $this->logger->error(__("No ID found in request."));
             return $result->setData([
                 'success' => false,
@@ -83,51 +74,24 @@ class Verification extends Action implements HttpPostActionInterface
         }
 
         try {
-            /** @var Tracker $tracker */
-            $tracker = $this->trackerModelFactory->create();
-            $this->trackerResourceModel->load($tracker, $id);
-
-            if (!$tracker->getId()) {
-                $this->logger->error(__("Config tracked not found"));
-                return $result->setData([
-                    'success' => false,
-                    'message' => __('Config tracked requested not found.'),
-                ]);
-            }
-
-            if ($tracker->getVerified()) {
-                $this->logger->alert(
-                    __('Config tracked with ID: %1 has been updated before.', $tracker->getId())
-                );
-            } else {
-                $tracker->setVerified(1);
-            }
-
-            $verifiedByData     =   $tracker->getVerifiedBy();
-            $arrayVerifiedBy    =   !empty($verifiedByData)
-                ? json_decode($verifiedByData, true)
-                : [];
-
-            if (!isset($arrayVerifiedBy[$userId])) {
-                $arrayVerifiedBy[$userId] = array(
-                    'counter' => 1,
-                );
-            } else {
-                $arrayVerifiedBy[$userId]['counter']++;
-            }
-
-            $tracker->setVerifiedBy(json_encode($arrayVerifiedBy));
-            $this->trackerResourceModel->save($tracker);
+            $this->verifier->verify($id, (int)$this->adminSession->getUser()->getId());
 
             $result->setData([
                 'success' => true,
                 'message' => __('Verification successful.'),
             ]);
-            $this->logger->info(__('Config tracked verified, ID: %1 ',$tracker->getId()));
+        } catch (NoSuchEntityException $e) {
+            $result->setData([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
         } catch (\Exception $e) {
             $this->logger->error(__($e->getMessage()));
+            $result->setData([
+                'success' => false,
+                'message' => __('Something went wrong while verifying this config.'),
+            ]);
         }
-
 
         return $result;
     }
