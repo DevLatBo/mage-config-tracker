@@ -71,15 +71,12 @@ class Verifier
             ? json_decode($verifiedByData, true)
             : [];
 
-        if (!isset($arrayVerifiedBy[$userId])) {
-            $arrayVerifiedBy[$userId] = array(
-                'counter' => 1,
-            );
-        } else {
-            $arrayVerifiedBy[$userId]['counter']++;
-        }
+        $entry = $arrayVerifiedBy[$userId] ?? array('counter' => 0);
+        $entry['counter']++;
 
-        $tracker->setVerifiedBy(json_encode($arrayVerifiedBy));
+        $arrayVerifiedBy = array($userId => $entry) + $arrayVerifiedBy;
+
+        $tracker->setVerifiedBy(json_encode($arrayVerifiedBy, JSON_FORCE_OBJECT));
         $this->trackerResourceModel->save($tracker);
 
         $this->logger->info(__('Config tracked verified, ID: %1 ', $tracker->getId()));

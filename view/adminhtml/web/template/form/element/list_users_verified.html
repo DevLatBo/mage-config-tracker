@@ -4,3 +4,10 @@
         (<span data-bind="text: counter"></span>)
     </li>
 </ul>
+
+<div data-bind="if: value() && value().length" class="form-element-lastverifiedby">
+    <p>
+        <span class="checked-label">Last time checked by: </span>
+        <span data-bind="text: value()[0].username"></span>
+    </p>
+</div>
