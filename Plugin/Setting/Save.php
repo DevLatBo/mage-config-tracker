@@ -9,7 +9,6 @@ use Devlat\Settings\Model\TrackerFactory;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Config\Model\Config;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\ResourceConnection;
 
 class Save
 {
@@ -17,10 +16,6 @@ class Save
      * @var ScopeConfigInterface
      */
     private ScopeConfigInterface $scopeConfig;
-    /**
-     * @var ResourceConnection
-     */
-    private ResourceConnection $resourceConnection;
     /**
      * @var TrackerFactory
      */
@@ -43,7 +38,6 @@ class Save
      * @param ScopeConfigInterface $scopeConfig
      * @param TrackerFactory $trackerFactory
      * @param TrackerResource $trackerResource
-     * @param ResourceConnection $resourceConnection
      * @param Session $adminSession
      * @param Logger $logger
      */
@@ -51,13 +45,11 @@ class Save
         ScopeConfigInterface $scopeConfig,
         TrackerFactory $trackerFactory,
         TrackerResource $trackerResource,
-        ResourceConnection $resourceConnection,
         Session $adminSession,
         Logger $logger
     )
     {
         $this->scopeConfig = $scopeConfig;
-        $this->resourceConnection = $resourceConnection;
         $this->trackerFactory = $trackerFactory;
         $this->trackerResource = $trackerResource;
         $this->adminSession = $adminSession;
@@ -73,8 +65,6 @@ class Save
         Config $subject
     ): void
     {
-        $connection = $this->resourceConnection->getConnection();
-        $tableName = $connection->getTableName('core_config_data');
 
         $section = $subject->getSection();
         $groups = $subject->getGroups();
@@ -89,16 +79,8 @@ class Save
                     continue;
                 }
                 $configPath = "{$section}/{$group}/{$field}";
-                $query = "SELECT COUNT(*) FROM $tableName WHERE path = :path";
-                $binds = ['path' => $configPath];
-                $existsInDb = (bool) $connection->fetchOne($query, $binds);
 
-                if (!$existsInDb) {
-                    $this->logger->info("Path {$configPath} not found in database");
-                    continue;
-                }
-
-                $oldValue = $this->scopeConfig->getValue($configPath);
+                $oldValue = (string)$this->scopeConfig->getValue($configPath);
                 $newValue = $data['value'];
                 if($oldValue != $newValue) {
                     try {
@@ -115,7 +97,7 @@ class Save
                         $this->logger->info("Path value: {$configPath} tracked successfully.");
 
                     } catch (\Exception $e) {
-                        $this->logger->info('Error: '. $$e->getMessage() );
+                        $this->logger->info('Error: '. $e->getMessage() );
                     }
                 }
             }
