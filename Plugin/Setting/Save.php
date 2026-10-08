@@ -79,9 +79,18 @@ class Save
                     continue;
                 }
                 $configPath = "{$section}/{$group}/{$field}";
+                $newValue = $data['value'];
+
+                // TODO: Fix in order to cover errors based on the multiselect fields.
+                if (is_array($newValue)) {
+                    continue;
+                }
+                // TODO: Fix in order to cover errors based on password fields.
+                if (preg_match('/^\*+$/', (string)$newValue)) {
+                    continue;
+                }
 
                 $oldValue = (string)$this->scopeConfig->getValue($configPath);
-                $newValue = $data['value'];
                 if($oldValue != $newValue) {
                     try {
                         /** @var Tracker $tracker */
