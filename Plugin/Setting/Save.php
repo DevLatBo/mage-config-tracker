@@ -58,7 +58,7 @@ class Save
 
     /**
      * @param Config $subject
-     * @return array
+     * @return void
      * @throws \Zend_Log_Exception
      */
     public function beforeSave(
@@ -69,47 +69,63 @@ class Save
         $section = $subject->getSection();
         $groups = $subject->getGroups();
 
-        $userId = $this->adminSession->getUser()->getId();
+        $userId = (int)$this->adminSession->getUser()->getId();
 
         $this->logger->info("Tracking config updates...");
+        foreach ($groups as $groupId => $groupData) {
+            $this->processGroup("{$section}/{$groupId}", $groupData, $section, $userId);
+        }
+    }
 
-        foreach ($groups as $group => $fields) {
-            foreach ($fields['fields'] as $field => $data) {
-                if (!isset($data['value'])) {
-                    continue;
-                }
-                $configPath = "{$section}/{$group}/{$field}";
-                $newValue = $data['value'];
+    /**
+     * Method in which validates, registers and updates the last config made.
+     * @param string $groupPath
+     * @param array $groupData
+     * @param string $section
+     * @param int $userId
+     * @return void
+     */
+    private function processGroup(string $groupPath, array $groupData, string $section, int $userId): void
+    {
+        foreach ($groupData['fields'] ?? [] as $field => $data) {
+            if (!isset($data['value'])) {
+                continue;
+            }
+            $configPath = "{$groupPath}/{$field}";
+            $newValue = $data['value'];
 
-                // TODO: Fix in order to cover errors based on the multiselect fields.
-                if (is_array($newValue)) {
-                    continue;
-                }
-                // TODO: Fix in order to cover errors based on password fields.
-                if (preg_match('/^\*+$/', (string)$newValue)) {
-                    continue;
-                }
+            // TODO: Fix in order to cover errors based on the multiselect fields.
+            if (is_array($newValue)) {
+                continue;
+            }
+            // TODO: Fix in order to cover errors based on password fields.
+            if (preg_match('/^\*+$/', (string)$newValue)) {
+                continue;
+            }
 
-                $oldValue = (string)$this->scopeConfig->getValue($configPath);
-                if($oldValue != $newValue) {
-                    try {
-                        /** @var Tracker $tracker */
-                        $tracker = $this->trackerFactory->create();
-                        $tracker->setSection($section);
-                        $tracker->setPath($configPath);
-                        $tracker->setConfiguratedBy($userId);
-                        $tracker->setOldValue($oldValue);
-                        $tracker->setNewValue($newValue);
-                        $tracker->setVerified(0);
-                        $this->trackerResource->save($tracker);
+            $oldValue = (string)$this->scopeConfig->getValue($configPath);
 
-                        $this->logger->info("Path value: {$configPath} tracked successfully.");
+            if($oldValue != $newValue) {
+                try {
+                    /** @var Tracker $tracker */
+                    $tracker = $this->trackerFactory->create();
+                    $tracker->setSection($section);
+                    $tracker->setPath($configPath);
+                    $tracker->setConfiguratedBy($userId);
+                    $tracker->setOldValue($oldValue);
+                    $tracker->setNewValue($newValue);
+                    $tracker->setVerified(0);
+                    $this->trackerResource->save($tracker);
 
-                    } catch (\Exception $e) {
-                        $this->logger->info('Error: '. $e->getMessage() );
-                    }
+                    $this->logger->info("Path value: {$configPath} tracked successfully.");
+
+                } catch (\Exception $e) {
+                    $this->logger->info('Error: '. $e->getMessage() );
                 }
             }
+        }
+        foreach ($groupData['groups'] ?? [] as $subGroupId => $subGroupData) {
+            $this->processGroup("{$groupPath}/{$subGroupId}", $subGroupData, $section, $userId);
         }
     }
 }
