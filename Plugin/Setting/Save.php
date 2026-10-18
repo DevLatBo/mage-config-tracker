@@ -91,7 +91,11 @@ class Save
             if (!isset($data['value'])) {
                 continue;
             }
+            if (!empty($data['inherit'])) {
+                continue;
+            }
             $configPath = "{$groupPath}/{$field}";
+            $isMultiselect = is_array($data['value']);
             $newValue = $this->normalizeConfigValue($data['value']);
 
             // TODO: Fix in order to cover errors based on password fields.
@@ -101,7 +105,8 @@ class Save
 
             $oldValue = (string)$this->scopeConfig->getValue($configPath);
 
-            if($oldValue != $newValue) {
+
+            if(!$this->isSameValue($oldValue, $newValue, $isMultiselect)) {
                 try {
                     /** @var Tracker $tracker */
                     $tracker = $this->trackerFactory->create();
@@ -125,15 +130,38 @@ class Save
         }
     }
 
+    /**
+     * Captures the input config value for text and multiselect config fields.
+     * @param string|array $value
+     * @return string
+     */
     private function normalizeConfigValue(string|array $value): string
     {
         if (!is_array($value)) {
-            return g$value;
+            return $value;
         }
         $value = array_filter($value, function($v) {
             return $v !== '' && !is_null($v);
         });
 
         return implode(',', $value);
+    }
+
+    /**
+     * Checks if the new config value is different compared with the old one.
+     * @param string $oldValue
+     * @param string $newValue
+     * @param bool $isMultiselect
+     * @return bool
+     */
+    private function isSameValue(string $oldValue, string $newValue, bool $isMultiselect): bool
+    {
+        if(!$isMultiselect) {
+            return $oldValue === $newValue;
+        }
+        $old = $oldValue === '' ? [] : explode(',', $oldValue);
+        $new  = $newValue === '' ? [] : explode(',', $newValue);
+
+        return $old === $new;
     }
 }

@@ -8,7 +8,9 @@
             "new_value": true,
             "verified": true,
             "configurated_at": true,
-            "checked": true
+            "checked": true,
+            "configurated_by": true,
+            "verified_by": true
         },
         "index": {
             "DEVLAT_SETTINGS_TRACKER_PATH": true
