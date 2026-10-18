@@ -92,12 +92,8 @@ class Save
                 continue;
             }
             $configPath = "{$groupPath}/{$field}";
-            $newValue = $data['value'];
+            $newValue = $this->normalizeConfigValue($data['value']);
 
-            // TODO: Fix in order to cover errors based on the multiselect fields.
-            if (is_array($newValue)) {
-                continue;
-            }
             // TODO: Fix in order to cover errors based on password fields.
             if (preg_match('/^\*+$/', (string)$newValue)) {
                 continue;
@@ -127,5 +123,17 @@ class Save
         foreach ($groupData['groups'] ?? [] as $subGroupId => $subGroupData) {
             $this->processGroup("{$groupPath}/{$subGroupId}", $subGroupData, $section, $userId);
         }
+    }
+
+    private function normalizeConfigValue(string|array $value): string
+    {
+        if (!is_array($value)) {
+            return g$value;
+        }
+        $value = array_filter($value, function($v) {
+            return $v !== '' && !is_null($v);
+        });
+
+        return implode(',', $value);
     }
 }
