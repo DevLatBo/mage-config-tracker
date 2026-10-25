@@ -32,12 +32,17 @@ class Save
      * @var Logger
      */
     private Logger $logger;
+    /**
+     * @var Config\Structure
+     */
+    private Config\Structure $configStructure;
 
     /**
      * Constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param TrackerFactory $trackerFactory
      * @param TrackerResource $trackerResource
+     * @param Config\Structure $configStructure
      * @param Session $adminSession
      * @param Logger $logger
      */
@@ -45,6 +50,7 @@ class Save
         ScopeConfigInterface $scopeConfig,
         TrackerFactory $trackerFactory,
         TrackerResource $trackerResource,
+        Config\Structure $configStructure,
         Session $adminSession,
         Logger $logger
     )
@@ -54,6 +60,7 @@ class Save
         $this->trackerResource = $trackerResource;
         $this->adminSession = $adminSession;
         $this->logger = $logger;
+        $this->configStructure = $configStructure;
     }
 
     /**
@@ -91,6 +98,7 @@ class Save
             if (!isset($data['value'])) {
                 continue;
             }
+            // TODO: point 3, track switching to "Use system value".
             if (!empty($data['inherit'])) {
                 continue;
             }
@@ -98,15 +106,21 @@ class Save
             $isMultiselect = is_array($data['value']);
             $newValue = $this->normalizeConfigValue($data['value']);
 
-            // TODO: Fix in order to cover errors based on password fields.
-            if (preg_match('/^\*+$/', (string)$newValue)) {
+            $isSensitive = $this->isSensitiveField($configPath);
+            if ($isSensitive && preg_match('/^\*+$/', $newValue)) {
                 continue;
             }
 
             $oldValue = (string)$this->scopeConfig->getValue($configPath);
+            if ($isSensitive) {
+                if ($oldValue === '' && $newValue === '') {
+                    continue;
+                }
+                $oldValue = $oldValue === '' ? '' : '******';
+                $newValue = $newValue === '' ? '' : '******';
+            }
 
-
-            if(!$this->isSameValue($oldValue, $newValue, $isMultiselect)) {
+            if($isSensitive || !$this->isSameValue($oldValue, $newValue, $isMultiselect)) {
                 try {
                     /** @var Tracker $tracker */
                     $tracker = $this->trackerFactory->create();
@@ -160,8 +174,24 @@ class Save
             return $oldValue === $newValue;
         }
         $old = $oldValue === '' ? [] : explode(',', $oldValue);
-        $new  = $newValue === '' ? [] : explode(',', $newValue);
+        $new = $newValue === '' ? [] : explode(',', $newValue);
 
         return $old === $new;
+    }
+
+    /**
+     * Checks if the config field is a password/encrypted field.
+     * @param string $configPath
+     * @return bool
+     */
+    private function isSensitiveField(string $configPath): bool
+    {
+        $element = $this->configStructure->getElement($configPath);
+        if (!$element instanceof Config\Structure\Element\Field) {
+            return false;
+        }
+        $backend = $element->getData()['backend_model'] ?? '';
+        return in_array($element->getType(), ['obscure', 'password'], true)
+            || ($backend && is_a($backend, Config\Backend\Encrypted::class, true));
     }
 }
