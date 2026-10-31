@@ -8,7 +8,9 @@ use Devlat\Settings\Model\Tracker;
 use Devlat\Settings\Model\TrackerFactory;
 use Magento\Backend\Model\Auth\Session;
 use Magento\Config\Model\Config;
+use Magento\Framework\App\Config\Initial;
 use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\App\ResourceConnection;
 
 class Save
 {
@@ -36,6 +38,14 @@ class Save
      * @var Config\Structure
      */
     private Config\Structure $configStructure;
+    /**
+     * @var Initial
+     */
+    private Initial $initialConfig;
+    /**
+     * @var ResourceConnection
+     */
+    private ResourceConnection $resourceConnection;
 
     /**
      * Constructor.
@@ -44,6 +54,8 @@ class Save
      * @param TrackerResource $trackerResource
      * @param Config\Structure $configStructure
      * @param Session $adminSession
+     * @param Initial $initialConfig
+     * @param ResourceConnection $resourceConnection
      * @param Logger $logger
      */
     public function __construct(
@@ -52,6 +64,8 @@ class Save
         TrackerResource $trackerResource,
         Config\Structure $configStructure,
         Session $adminSession,
+        Initial $initialConfig,
+        ResourceConnection $resourceConnection,
         Logger $logger
     )
     {
@@ -61,6 +75,8 @@ class Save
         $this->adminSession = $adminSession;
         $this->logger = $logger;
         $this->configStructure = $configStructure;
+        $this->initialConfig = $initialConfig;
+        $this->resourceConnection = $resourceConnection;
     }
 
     /**
@@ -85,6 +101,65 @@ class Save
     }
 
     /**
+     * Saves configuration tracked in custom table devlat_settings_tracker.
+     * @param string $section
+     * @param string $configPath
+     * @param int $userId
+     * @param string $oldValue
+     * @param string $newValue
+     * @return void
+     */
+    private function saveTracker(string $section, string $configPath, int $userId, string $oldValue, string $newValue): void
+    {
+        try {
+            /** @var Tracker $tracker */
+            $tracker = $this->trackerFactory->create();
+            $tracker->setSection($section);
+            $tracker->setPath($configPath);
+            $tracker->setConfiguratedBy($userId);
+            $tracker->setOldValue($oldValue);
+            $tracker->setNewValue($newValue);
+            $tracker->setVerified(0);
+            $this->trackerResource->save($tracker);
+
+            $this->logger->info("Path value: {$configPath} tracked successfully.");
+
+        } catch (\Exception $e) {
+            $this->logger->info('Error: '. $e->getMessage() );
+        }
+    }
+
+    /**
+     * Query in which checks if value is stored in core_config_data, otherwise returns null.
+     * @param string $configPath
+     * @return string|null
+     */
+    private function getStoredValue(string $configPath): ?string
+    {
+        $connection = $this->resourceConnection->getConnection();
+        $select = $connection->select()
+            ->from($this->resourceConnection->getTableName('core_config_data'), 'value')
+            ->where('path = ?', $configPath)
+            ->where('scope = ?', ScopeConfigInterface::SCOPE_TYPE_DEFAULT)
+            ->where('scope_id', 0);
+        $value = $connection->fetchOne($select);
+
+        return $value === false ? null : $value['value'];
+    }
+
+    private function getSystemDefault(string $configPath): string
+    {
+        $value = $this->initialConfig->getData(ScopeConfigInterface::SCOPE_TYPE_DEFAULT);
+        foreach (explode('/', $configPath) as $key) {
+            if (!is_array($value) || !isset($value[$key])) {
+                return '';
+            }
+            $value = $value[$key];
+        }
+        return is_array($value) ? '' : (string)$value;
+    }
+
+    /**
      * Method in which validates, registers and updates the last config made.
      * @param string $groupPath
      * @param array $groupData
@@ -95,18 +170,31 @@ class Save
     private function processGroup(string $groupPath, array $groupData, string $section, int $userId): void
     {
         foreach ($groupData['fields'] ?? [] as $field => $data) {
+            $configPath = "{$groupPath}/{$field}";
+            $isSensitive = $this->isSensitiveField($configPath);
+
+            if (!empty($data['inherit'])) {
+                $oldValue = $this->getStoredValue($configPath);
+                if ($oldValue === null) {
+                    continue;
+                }
+                $newValue = $this->getSystemDefault($configPath);
+                if ($oldValue === $newValue) {
+                    continue;
+                }
+                if ($isSensitive) {
+                    $oldValue = $oldValue === '' ? '' : '******';
+                    $newValue = $newValue === '' ? '' : '******';
+                }
+                $this->saveTracker($section, $configPath, $userId, $oldValue, $newValue);
+                continue;
+            }
             if (!isset($data['value'])) {
                 continue;
             }
-            // TODO: point 3, track switching to "Use system value".
-            if (!empty($data['inherit'])) {
-                continue;
-            }
-            $configPath = "{$groupPath}/{$field}";
             $isMultiselect = is_array($data['value']);
             $newValue = $this->normalizeConfigValue($data['value']);
 
-            $isSensitive = $this->isSensitiveField($configPath);
             if ($isSensitive && preg_match('/^\*+$/', $newValue)) {
                 continue;
             }
@@ -121,22 +209,7 @@ class Save
             }
 
             if($isSensitive || !$this->isSameValue($oldValue, $newValue, $isMultiselect)) {
-                try {
-                    /** @var Tracker $tracker */
-                    $tracker = $this->trackerFactory->create();
-                    $tracker->setSection($section);
-                    $tracker->setPath($configPath);
-                    $tracker->setConfiguratedBy($userId);
-                    $tracker->setOldValue($oldValue);
-                    $tracker->setNewValue($newValue);
-                    $tracker->setVerified(0);
-                    $this->trackerResource->save($tracker);
-
-                    $this->logger->info("Path value: {$configPath} tracked successfully.");
-
-                } catch (\Exception $e) {
-                    $this->logger->info('Error: '. $e->getMessage() );
-                }
+                $this->saveTracker($section, $configPath, $userId, $oldValue, $newValue);
             }
         }
         foreach ($groupData['groups'] ?? [] as $subGroupId => $subGroupData) {
