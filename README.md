@@ -1,6 +1,6 @@
 # Rastreo de Cambios en Configuracion desde el Admin.
 
-Este módulo en su versión 1.2.0 presenta mejoras en su desarrollo, hay nuevas características y/o features 
+Este módulo en su versión 1.3.0 presenta mejoras en su desarrollo, hay nuevas características y/o features 
 con miras a brindar una mejor experiencia en rastreo a cambios de configuración en el admin.
 
 ### Propósito
@@ -32,7 +32,7 @@ como columnas creadas:
  * configurated_at (Momento en el cual se hizo el cambio en el config).
  * checked (Momento en el cual se reviso el cambio).
 
-Tomar en cuenta que checked tiene como default NULL debido a que cuando se crea 
+Tomar en cuenta que checked tiene como default `0000-00-00 00:00:00` debido a que cuando se crea 
 este registro se debe esperar primero a que ese cambio sea revisado desde el admin.
 
 Se tiene el model, resourceModel y Collection para esta tabla que 
@@ -105,14 +105,44 @@ public function beforeSave(
         Config $subject
     ): void
     {
-       ...
-}
+
+        $section = $subject->getSection();
+        $groups = $subject->getGroups();
+
+        $userId = (int)$this->adminSession->getUser()->getId();
+
+        $this->logger->info("Tracking config updates...");
+        foreach ($groups as $groupId => $groupData) {
+            $this->processGroup("{$section}/{$groupId}", $groupData, $section, $userId);
+        }
+    }
 ```
 Método Save no tiene ningun parámetro, por lo que es un método **void** ya que no tiene 
 ningún input que estemos alterando.
-Verificamos dentro de este plugin si la configuración se encuentra registrado primero en  
-tabla core_config_data y si está, verifica si se ha realizado un cambio en su value, si es que 
-se cambio de dato el config, se registra el cambio en tabla devlat_settings_tracker:
+
+Dentro del **beforeSave** se obtiene la sección (**getSection()**), los grupos enviados desde 
+el formulario (**getGroups()**) y el ID del admin logueado (adminSession) luego se recorre 
+los grupos y llama a processGroup("seccion/grupo", ...) para cada uno.
+
+Dentro de todo lo que es el método processGroup() se recorre los campos del grupo.
+Para cada configPath:
+
+- Llama a isSensitiveField() para saber si es un campo password u obscure, o si está cifrado.
+- Si se marcó "Use system value" (inherit):
+    - oldValue = getStoredValue(), lo que hay en la base de datos. Si es null, no había nada guardado
+      y no se registra nada.
+    - newValue = getSystemDefault(), el valor de config.xml.
+    - Si son distintos, se enmascaran (si el campo es sensible) y se llama a saveTracker().
+- Si se envió un valor normal:
+    - normalizeConfigValue() convierte los multiselect (arrays) en un string separado por comas.
+    - Si es sensible y el valor llega como ******, el usuario no lo tocó y se salta.
+    - oldValue sale de scopeConfig->getValue(). Si el campo es sensible, ambos valores se enmascaran.
+    - isSameValue() compara los valores (los multiselect como listas). Si cambió, o si el campo es
+      sensible, llama a saveTracker().
+- Al final se llama a sí misma con cada subgrupo (groups anidados). Es recursiva.
+
+En método saveTracker(): crea un Tracker con section, path, usuario, old/new y verified = 0, y lo guarda en
+devlat_settings_tracker. Si algo falla, lo escribe en el log.
 
 ```php
 $oldValue = $this->scopeConfig->getValue($configPath);
@@ -136,13 +166,13 @@ if($oldValue != $newValue) {
     }
 }
 ```
-Es de esta forma se procede con el registro, éste plugin está ubicado en 
+Es de esta forma como se procede con el registro, éste plugin está ubicado en 
 `Devlat\Settings\Plugin\Setting\Save` para que pueda revisarlo.
 
 ## Revision en Cambio de Configuracion
-Para esta sección damos a conocer el DataProvider en el cual obtenemos los datos del 
-item que se ha accedido para su verificación en el cual se obtiene los datos del 
-tracker item en class `Devlat\Settings\Ui\DataProvider\Config`.
+En el DataProvider se obtiene los datos del item que se ha accedido para su verificación 
+en el cual se obtiene los datos del  tracker item en class
+`Devlat\Settings\Ui\DataProvider\Config`.
 
 Para poder visualizar en detalle el cambio de configuración, tenemos que crear un nuevo 
 ui_component y lo tenemos declarado en el layout config_tracker_verify:
@@ -206,8 +236,34 @@ puede usar el comando module:uninstall, pero no olvide tomar para éste módulo 
 * Si el usuario elimina la tabla, ya no será posible acceder a la página de la grid y redireccionará al home del admin.
 
 ## Mejoras
-Para esta **versión 1.2.1** se tiene lo siguiente:
-* Comando bin/magento devlat:settings:cleanup para eliminar la tabla del tracking con el fin de evitar dejar datos sueltos en la BD.
+**Plugin de guardado (Plugin/Setting/Save.php)**
+- Ahora solo registra un cambio si el valor realmente cambió (isSameValue()). En los multiselect
+  compara la lista de valores.
+- Los multiselect se guardan como texto separado por comas (normalizeConfigValue()).
+- Los campos password o cifrados se detectan con isSensitiveField() y en el tracker se guardan como
+  ******. Si el valor llega como asteriscos, se entiende que no se tocó y no se registra.
+- Cuando se marca "Use system value" (inherit), se registra el cambio del valor guardado al default de
+  config.xml (getStoredValue() y getSystemDefault()).
+- Se procesan también los subgrupos anidados, porque processGroup() es recursivo.
+
+**Verificación**
+- La lógica de "marcar como verificado" se movió a un servicio nuevo, Model/Service/Verifier.php.
+  Antes estaba duplicada en el controlador AJAX.
+- El controlador Tracker/Verify ahora verifica al abrir la página, así que el contador se actualiza
+  solo. Se quitaron el bloque y la plantilla de confirmación que había antes.
+- En verified_by, el último usuario que verificó queda primero, y el formulario muestra "Last time
+  checked by: …".
+- Si el ID no existe, se lanza NoSuchEntityException y la respuesta JSON trae un mensaje de error
+  claro.
+
+**Base de datos**
+- old_value y new_value pasaron de varchar(128) a text, para que los valores largos no se corten.
+- Se completó db_schema_whitelist.json con configurated_by y verified_by.
+
+**Estilos**
+- El CSS suelto se reemplazó por view/adminhtml/web/css/source/_module.less, y se quitaron los <css>
+  de los layouts.
+
 ## Bonus Info
 Se usa un propio logger en donde se hace seguimiendo a las acciones 
 que se realizan dentro de este módulo:
